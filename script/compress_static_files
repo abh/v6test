@@ -1,0 +1,83 @@
+#!/usr/bin/env perl5.10
+# vim: ts=8:sw=2:expandtab
+use strict;
+use warnings;
+
+use FindBin;
+
+use lib "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../../lib";
+
+use File::Find::Rule;
+use File::Path qw(mkpath);
+use File::Basename qw(fileparse);
+use File::Copy qw(move);
+use V6::Util qw(run);
+
+# We'll call this in the production deployment script, to not end up
+# with the .gzip files in the development instances.  The production
+# apache server is setup to serve the .gzip files to clients with
+# "Accept-Encoding: gzip"
+
+my $work_path = $FindBin::Bin . "/../tmp/compress.$$";
+mkpath $work_path or die "Could not create $work_path: $!";
+
+my %paths_done;
+
+my $finder = File::Find::Rule->new;
+
+# don't minimize the extjs and yui files (they should already be...)
+my @files = 
+  grep { $_ !~ m{ ext/jquery }x }
+  $finder->or( $finder->new->directory->name('extjs', 'yui', '.g')->prune->discard,
+               $finder->new->file()->name( '*.js', '*.css' )
+             )->in( $FindBin::Bin . "/../public" );
+
+for my $file ( @files ) {
+    next if $file =~ m/-min\.([^\.]+)$/;
+    if (different_mtime( min_name($file), $file))  {
+        minimize($file);
+    }
+}
+
+rmdir $work_path;
+exit 0;
+
+
+sub min_name {
+    my $file = shift;
+    return $file if $file =~ m/[-\.]min\.([^\.]+)$/;
+    $file =~ s/(\.[^\.]+)$/-min$1/;
+    return $file;
+}
+
+sub different_mtime {
+    my ($f1, $f2) = @_;
+    return 0 if (((stat($f1))[9] || 0) == ((stat($f2))[9] || 0));
+    return 1;
+}
+
+sub compress {
+    my $file_orig = shift;
+    print "Compressing $file_orig\n";
+
+    my ($file, $dir) = fileparse($file_orig);
+    run("cp", "-p", $file_orig, $work_path, { silent => 1 });
+    run("gzip", "-9", "$work_path/$file", { silent => 1 });
+    move("$work_path/$file.gz", "$dir/$file.gzip") or die "Could not move $work_path/$file.gz $dir: $!";
+}
+
+sub minimize {
+    my $file_orig = shift;
+    my ($file, $dir) = fileparse($file_orig);
+    print "Minimizing $file_orig\n";
+
+    my $tmp_file = "$work_path/" . min_name($file);
+
+    run("$FindBin::Bin/yuicompressor", '-o', $tmp_file, $file_orig);
+
+    my ($atime, $mtime) = (stat($file_orig))[8,9];
+    utime $atime, $mtime, $tmp_file;
+
+    move($tmp_file, "$dir/") or die "Could not move $tmp_file $dir: $!";
+}

@@ -22,6 +22,7 @@ WriteMakefile(
                    'Moose'       => 0,
                    'MooseX::Singleton' => 0,
                    'File::HomeDir' => 0,
+                   'File::Find::Rule' => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );

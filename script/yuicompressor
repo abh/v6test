@@ -1,0 +1,19 @@
+#!/bin/sh
+
+ulimit -v 2000000
+
+VERSION=2.4.2
+DIR=~/tmp/.yuicompressor
+mkdir -p $DIR
+JAR=$DIR/yuicompressor-$VERSION.jar
+if [ ! -e $JAR ]; then
+   mkdir -p $DIR
+   curl -q -o $JAR.tmp http://mirrors.solfo.com/yuicompressor/yuicompressor-$VERSION/build/yuicompressor-$VERSION.jar && \
+   mv $JAR.tmp $JAR
+fi
+
+java -jar $JAR \
+  --charset utf-8 --line-break 100 --preserve-semi \
+  $@
+
+

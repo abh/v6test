@@ -8,6 +8,7 @@ our $VERSION = '0.10';
 use base 'Mojolicious';
 
 use V6::Config;
+use V6::Static::Dispatcher;
 
 __PACKAGE__->attr( config => sub { V6::Config->new }  );
 
@@ -17,6 +18,8 @@ sub startup {
 
     # force loading the config on startup
     $self->config;
+
+    $self->static(bless $self->static, 'V6::Static::Dispatcher');
 
     # Default to ".ep" templates
     $self->renderer->default_handler('ep');
