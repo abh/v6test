@@ -1,0 +1,35 @@
+#!/usr/bin/env perl5.10
+
+use strict;
+use warnings;
+
+use FindBin;
+
+use lib "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../../lib";
+
+use V6::Beanstalk;
+use MongoDB;
+
+my $beanstalk = V6::Beanstalk->new;
+$beanstalk->watch('v6-results');
+
+my $mongodb = MongoDB::Connection->new(host => 'localhost', port => 27017);
+my $db   = $mongodb->get_database('v6test');
+my $coll = $db->get_collection('results');
+while (my $job = $beanstalk->reserve) {
+    my %data = %{ $job->args };
+    my $id   = eval{ $coll->insert(\%data) };
+    my $err = $db->last_error;
+    if ($err && !$err->{ok}) {
+        warn Data::Dumper->Dump([\$err], [qw(err)]);
+    }
+    if ($id) {
+        $job->delete;
+    }
+    else {
+        $job->release({ delay => 60 });
+    }
+}
+
+1;

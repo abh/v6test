@@ -3,11 +3,13 @@ package V6;
 use strict;
 use warnings;
 
+our $VERSION = '0.10';
+
 use base 'Mojolicious';
 
 use V6::Config;
 
-__PACKAGE__->attr( config => sub { V6::Config->load(shift) }  );
+__PACKAGE__->attr( config => sub { V6::Config->new }  );
 
 # This method will run once at server start
 sub startup {

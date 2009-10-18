@@ -18,8 +18,10 @@ WriteMakefile(
                    'File::Slurp' => 0,
                    'JSON::XS'    => 2.20,
                    'MongoDB'     => 0.20,
-                   'Beanstalk::Client' => 0,
-                   
+                   'Beanstalk::Client' => 1.05,
+                   'Moose'       => 0,
+                   'MooseX::Singleton' => 0,
+                   'File::HomeDir' => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );
