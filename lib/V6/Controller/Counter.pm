@@ -21,6 +21,10 @@ sub _json {
     return $json;
 }
 
+sub index {
+    return shift->redirect('/');
+}
+
 sub _count {
     my ($self, $data) = @_;
     eval { $beanstalk->put({ttr => 10}, $data) };

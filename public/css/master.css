@@ -1,0 +1,22 @@
+body {
+  color: #222222;
+  font-family: Helvetica, "HelveticaNeue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 28px;
+  background-color:#fff;
+  margin:0px;
+  padding:0px;
+}
+
+#content {
+   margin: 10px;
+   padding: 5px;
+   border: 2px solid orange;
+}
+
+#footer {
+   margin: 17px;
+   font-size: 12px;
+   margin-top: 0px;
+   text-align: right;
+}
