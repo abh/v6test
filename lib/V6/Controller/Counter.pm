@@ -35,6 +35,13 @@ sub _count {
     return 1;
 }
 
+sub ip {
+    my $self = shift;
+    my $rand = my $js = _json->encode({ip => '127.0.0.' . int(rand(255))});
+    $self->res->headers->content_type('application/json');
+    return $self->render_text($js);
+}
+
 sub json {
     my $self = shift;
 

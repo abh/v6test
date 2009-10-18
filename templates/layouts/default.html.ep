@@ -1,6 +1,15 @@
 <!doctype html><html>
-  <head><title>Welcome</title></head>
+  <head>
+    <title>IPv6 Test widget</title>
+    <link type="text/css" href="/yui/reset-base-min.css" rel="Stylesheet" />
+    <link type="text/css" href="/css/master.css" rel="Stylesheet" />
+  </head>
+
   <body>
+    <div id="content">
     <%== content %>
+    </div>
+
+    <%== $self->render_partial('_common/footer'); %> 
   </body>
 </html>
