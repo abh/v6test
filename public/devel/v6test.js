@@ -1,7 +1,7 @@
 /*! Copyright 2009 Ask Bjørn Hansen
     see http://www.v6test.develooper.com/
  */
-v6 = { "version": "1.0" };
+v6 = { "version": "1.01" };
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 4;
 v6.api_server = 'http://www.v6test.develooper.com/';
@@ -19,7 +19,11 @@ v6.check_timeout = function() {
 v6.submit_results = function() {
 
     var cookie_path = v6.path || '/';
-    var v6uq = $.cookie('v6uq') || $.cookie('v6uq', v6.uuid(), { expires: 2, path: cookie_path });
+    var v6uq = $.cookie('v6uq');
+    if (!v6uq) {
+        v6uq = v6.uuid();
+        $.cookie('v6uq', v6uq, { expires: 7, path: cookie_path });
+    }
 
     var q = "version=" + v6.version;
     for (var i=0; i < v6.hosts.length; i++) {
