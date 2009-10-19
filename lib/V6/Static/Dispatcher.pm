@@ -12,9 +12,22 @@ sub serve {
     }
     my $rv = $self->SUPER::serve($c, $rel);
     return $rv if $rv;
-    if (!$devel) {
-        my $res = $c->res;
-        $res->headers->header('Cache-Control', 'maxage=7200');
+
+    my $res = $c->res;
+    if ($rel eq 'i/t.gif') {
+        my $no_cache = 's-max-age=0,max-age=0,private,no-cache';
+        if ($c->req->headers->header('X-Varnish')) {
+            $res->headers->header('Cache-Control', 's-maxage=315360000');
+            $res->headers->header('X-Pass-Cache-Control', 
+                                  $no_cache
+                                 );
+        }
+        else {
+            $res->headers->header('Cache-Control', $no_cache);
+        }
+    }
+    elsif (!$devel and $rel =~ m{js/.*\.js$}) {
+        $res->headers->header('Cache-Control', 'max-age=7200');
     }
     return;
 }
