@@ -2,7 +2,11 @@
   <head>
     <title>IPv6 Test widget</title>
     <link type="text/css" href="/yui/reset-base-min.css" rel="Stylesheet" />
+% if ($self->app->mode eq 'development') {
     <link type="text/css" href="/css/master.css" rel="Stylesheet" />
+% } else {
+    <link type="text/css" href="/css/master-min.css" rel="Stylesheet" />
+% }
   </head>
 
   <body>

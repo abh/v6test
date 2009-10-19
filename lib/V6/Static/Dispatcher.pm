@@ -29,6 +29,9 @@ sub serve {
     elsif (!$devel and $rel =~ m{js/.*\.js$}) {
         $res->headers->header('Cache-Control', 'max-age=7200');
     }
+    elsif ($rel =~ m{-min\.(css|js)$}) {
+        $res->headers->header('Cache-Control', 'max-age=7200');
+    }
     return;
 }
 
