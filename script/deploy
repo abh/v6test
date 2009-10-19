@@ -6,10 +6,11 @@ else
   STAT_FORMAT='--printf="%Y"'
 fi
 
+mkdir -p public/js/v1/
 STAT_T=`stat $STAT_FORMAT public/js/v1/v6test.js 2> /dev/null`
 STAT_S=`stat $STAT_FORMAT public/devel/v6test.js`
 
-if [ "x$STAT_GZIP" != "x$STAT_ORIG" ]; then
+if [ "x$STAT_T" != "x$STAT_S" ]; then
    cat public/devel/jquery-cookie-2.1.js public/devel/v6test.js \
       | ./script/yuicompressor --type js \
       > public/js/v1/v6test.js
