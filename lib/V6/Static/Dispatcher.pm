@@ -29,7 +29,7 @@ sub serve {
     elsif (!$devel and $rel =~ m{js/.*\.js$}) {
         $res->headers->header('Cache-Control', 'max-age=7200');
     }
-    elsif ($rel =~ m{-min\.(css|js)$}) {
+    elsif ($rel =~ m{(-min\.(css|js)|^favicon.ico)$}) {
         $res->headers->header('Cache-Control', 'max-age=7200');
     }
     return;
