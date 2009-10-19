@@ -1,7 +1,7 @@
 /*! Copyright 2009 Ask Bjørn Hansen
     see http://www.v6test.develooper.com/
  */
-v6 = { "version": "1.01" };
+v6 = { "version": "1.02" };
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 4;
 v6.api_server = 'http://www.v6test.develooper.com/';
@@ -82,6 +82,11 @@ v6.check_count = function() {
 }
 
 v6.test = function() {
+
+   if (v6.only_once) {
+      if ($.cookie('v6uq')) return;
+   }
+
 
    document.write('<div id="v6test"></div>');
 
