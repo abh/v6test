@@ -1,4 +1,4 @@
-#!/usr/bin/env perl5.10
+#!/usr/bin/env perl
 # vim: ts=8:sw=2:expandtab
 use strict;
 use warnings;
