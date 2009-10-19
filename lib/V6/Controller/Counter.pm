@@ -55,6 +55,7 @@ sub json {
     $data->{'site'}       = $params->{site} if $params->{site};
     $data->{'time'}       = time;
     $data->{'v6uq'}       = $params->{v6uq};
+    $data->{'version'}    = $params->{version};
 
     warn Dumper(\$data); # , \$self);
 

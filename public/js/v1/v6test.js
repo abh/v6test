@@ -1,7 +1,10 @@
-v6 = {};
+/*! Copyright 2009 Ask Bjørn Hansen
+    see http://www.v6test.develooper.com/
+ */
+v6 = { "version": "1.0" };
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
-v6.timeout = 3;
-v6.api_server = 'http://example.com/';
+v6.timeout = 4;
+v6.api_server = 'http://www.v6test.develooper.com/';
 
 v6.check_timeout = function() {
    var now = (new Date).getTime();
@@ -18,10 +21,10 @@ v6.submit_results = function() {
     var cookie_path = v6.path || '/';
     var v6uq = $.cookie('v6uq') || $.cookie('v6uq', v6.uuid(), { expires: 2, path: cookie_path });
 
-    var q = "";
+    var q = "version=" + v6.version;
     for (var i=0; i < v6.hosts.length; i++) {
         var host = v6.hosts[i];
-        q += host + '=';
+        q += '&' + host + '=';
         if (v6.status[host] && v6.status[host] == 'ok') {
            var response_time = v6.times[host];
            q += response_time; 
@@ -37,7 +40,6 @@ v6.submit_results = function() {
               $('#v6test-results').append(host + ": failed<br>");
            }
         }
-        if (i < v6.hosts.length) { q += '&' };
     }
 
     q += '&v6uq=' + v6uq;
