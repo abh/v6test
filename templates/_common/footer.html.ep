@@ -5,3 +5,15 @@
        bandwidth from <a href="http://www.phyber.com/">Phyber</a>.
     </div>
 
+
+% if ($self->app->config->google_analytics) {
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("<%== $self->app->config->google_analytics %>");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+% }

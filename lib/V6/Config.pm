@@ -24,6 +24,13 @@ has 'beanstalk_server' =>
       default => sub { $_[0]->_config_hash()->{beanstalk_server} || '127.0.0.1' },
     );
 
+has 'google_analytics' =>
+    ( is      => 'rw',
+      isa     => 'Str',
+      lazy    => 1,
+      default => sub { $_[0]->_config_hash()->{google_analytics} },
+    );
+
 has 'test_image_domain' =>
     ( is      => 'rw',
       isa     => 'Str',
