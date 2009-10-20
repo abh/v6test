@@ -35,9 +35,20 @@ sub _count {
     return 1;
 }
 
+sub _remote_ip {
+    my $self = shift;
+    if ($self->app->config->proxy_mode) {
+        my $xff = $self->req->headers->header('X-Forwarded-For') || '';
+        return (split /, /, $xff)[0];
+    }
+    return $self->tx->remote_address;
+}
+
 sub ip {
     my $self = shift;
-    my $rand = my $js = _json->encode({ip => '127.0.0.' . int(rand(255))});
+    my $rand = my $js = _json->encode({ip => $self->_remote_ip});
+    $self->res->headers->header('Cache-Control', 'private,max-age=0');
+    $self->res->headers->header('Vary', '*');
     $self->res->headers->content_type('application/json');
     return $self->render_text($js);
 }
@@ -51,7 +62,7 @@ sub json {
     my $data = { map { $_ => $params->{$_} } grep { m/^ipv\d+/ } keys %$params };
     $data->{'user-agent'} = $self->req->headers->user_agent;
     $data->{'referrer'}   = $self->req->headers->header('referer');
-    $data->{'remote_ip'}  = $self->tx->remote_address;
+    $data->{'remote_ip'}  = $self->_remote_ip;
     $data->{'site'}       = $params->{site} if $params->{site};
     $data->{'time'}       = time;
     $data->{'v6uq'}       = $params->{v6uq};

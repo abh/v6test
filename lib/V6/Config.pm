@@ -38,6 +38,12 @@ has 'test_image_domain' =>
       default => sub { $_[0]->_config_hash()->{test_image_domain} || 'v6test.develooper.com' },
     );
 
+has 'proxy_mode' =>
+    ( is      => 'rw',
+      isa     => 'Bool',
+      lazy    => 1,
+      default => sub { $_[0]->_config_hash()->{proxy_mode} || 0 },
+    );
 
 has '_config_hash' => (
     is      => 'rw',
