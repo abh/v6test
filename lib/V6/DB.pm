@@ -7,9 +7,8 @@ my $mongodb = MongoDB::Connection->new(host => 'localhost', port => 27017);
 my $db   = $mongodb->get_database('v6test');
 my $coll = $db->get_collection('results');
 
-sub collection {
-    return $coll;
-}
+sub db { return $db }
+sub collection { return $coll }
 
 
 

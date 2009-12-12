@@ -14,6 +14,7 @@ use V6::DB;
 my $beanstalk = V6::Beanstalk->new;
 $beanstalk->watch('v6-results');
 
+my $db   = V6::DB->db;
 my $coll = V6::DB->collection;
 while (my $job = $beanstalk->reserve) {
     my %data = %{ $job->args };
