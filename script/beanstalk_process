@@ -9,14 +9,12 @@ use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../lib";
 
 use V6::Beanstalk;
-use MongoDB;
+use V6::DB;
 
 my $beanstalk = V6::Beanstalk->new;
 $beanstalk->watch('v6-results');
 
-my $mongodb = MongoDB::Connection->new(host => 'localhost', port => 27017);
-my $db   = $mongodb->get_database('v6test');
-my $coll = $db->get_collection('results');
+my $coll = V6::DB->collection;
 while (my $job = $beanstalk->reserve) {
     my %data = %{ $job->args };
     my $id   = eval{ $coll->insert(\%data) };

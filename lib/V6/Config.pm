@@ -28,7 +28,7 @@ has 'google_analytics' =>
     ( is      => 'rw',
       isa     => 'Str',
       lazy    => 1,
-      default => sub { $_[0]->_config_hash()->{google_analytics} },
+      default => sub { $_[0]->_config_hash()->{google_analytics} || '' },
     );
 
 has 'test_image_domain' =>
