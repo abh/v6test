@@ -6,6 +6,8 @@ v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 4;
 v6.api_server = 'http://www.v6test.develooper.com/';
 
+var $target;
+
 v6.check_timeout = function() {
    var now = (new Date).getTime();
    if (now - v6.start_timer > (v6.timeout * 1000)) {
@@ -33,15 +35,15 @@ v6.submit_results = function() {
            var response_time = v6.times[host];
            q += response_time; 
            q += '&' + host + '_ip=' + v6.ip[host];
-           if (!v6.hidden) {
-              $('#v6test-results').append(host + ": " + 'ok<br>');
+           if ($target) {
+              $target.append(host + ": " + 'ok<br>');
                /* (' + response_time + 'ms) */
            }
         }
         else {
            q += v6.status[host];
-           if (!v6.hidden) {
-              $('#v6test-results').append(host + ": failed<br>");
+           if ($target) {
+              $target.append(host + ": failed<br>");
            }
         }
     }
@@ -50,8 +52,8 @@ v6.submit_results = function() {
 
     jQuery.getJSON( v6.api_server + '/c/json?callback=?', q,
       function(json) {
-          if (json.ok && !v6.hidden) {
-             $('#v6test-results').append('<br>Results submitted, thanks!');
+          if (json.ok && $target) {
+             $target.append('<br>Results submitted, thanks!');
           }
       }
     );
@@ -87,7 +89,6 @@ v6.test = function() {
       if ($.cookie('v6uq')) return;
    }
 
-
    document.write('<div id="v6test"></div>');
 
    v6.times  = {};
@@ -95,8 +96,10 @@ v6.test = function() {
    v6.ip     = {};
 
    $(window).load(function() {
-      if (v6.hidden) { $('#v6test').hide() }
-      $('#v6test').append('Testing ipv4 and ipv6 connectivity:');
+      if (v6.target) {
+         $target = $(v6.target);
+         $target.append('Testing ipv4 and ipv6 connectivity:');
+      }
       v6.images = v6.hosts.length;
       v6.images_loaded = 0;
       var img_tags = "";
@@ -108,7 +111,6 @@ v6.test = function() {
                        + ' width="1" height="1">';
       }
       $('#v6test').append(img_tags);
-      $('#v6test').append('<div id="v6test-results"></div>');
       v6.start_timer = (new Date).getTime();
 
       $('img.v6test_test_img').load(function() {
