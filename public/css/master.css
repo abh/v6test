@@ -24,3 +24,12 @@ body {
    margin-top: 0px;
    text-align: right;
 }
+
+#add-site-wrapper {
+   display:none;
+}
+
+span.example {
+   color: grey;
+   font-size: 90%;
+}

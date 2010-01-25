@@ -17,6 +17,15 @@ has 'base_url' =>
       default => sub { $_[0]->_config_hash()->{base_url} },
     );
 
+has 'base_domain' => 
+    ( is      => 'rw',
+      isa     => 'Str',
+      lazy    => 1,
+      default => sub { $_[0]->_config_hash()->{base_domain} 
+                       || Mojo::URL->new($_[0]->base_url)->host();
+                     },
+    );
+
 has 'beanstalk_server' =>
     ( is      => 'rw',
       isa     => 'Str',
@@ -44,6 +53,14 @@ has 'proxy_mode' =>
       lazy    => 1,
       default => sub { $_[0]->_config_hash()->{proxy_mode} || 0 },
     );
+
+has 'rpx_api_key' =>
+    ( is      => 'rw',
+      isa     => 'Str',
+      lazy    => 1,
+      default => sub { $_[0]->_config_hash()->{rpx_api_key} || 0 },
+    );
+
 
 has '_config_hash' => (
     is      => 'rw',

@@ -3,6 +3,12 @@ package V6::Controller;
 use strict;
 use warnings;
 
+use Data::Dump qw(pp);
+
+use MojoX::Session;
+use MojoX::Session::Transport::Cookie;
+use MojoX::Session::Store::MongoDB;
+
 use base 'Mojolicious::Controller';
 
 #sub config {
@@ -26,6 +32,9 @@ sub _redirect {
 
     unless ($url =~ m{^https?://}) {
         $url = $self->app->config->base_url . $url;
+        # TODO: use Mojo::URL, like ...
+        # my $base     = $self->req->url->base->clone;
+        # my $location = Mojo::URL->new->base($base);
     }
  
     $self->res->code($code);
@@ -41,19 +50,77 @@ sub _redirect {
 
 sub render {
     my $self = shift;
+    $self->stash('widget_target' => '') unless $self->stash('widget_target');
+    $self->stash('session' => $self->session) unless $self->stash('session');
+    return $self->SUPER::render(@_);
+}
 
-    my $rv = eval { $self->SUPER::render(@_) };
-    my $err = $@;
+sub session {
+    my $self = shift;
+    return $self->{_session} if $self->{_session};
 
-    my $content_type = $self->res->headers->header('Content-Type')
-      or return $rv;
-    $content_type .= "; charset=" . 'utf-8'
-      if $content_type =~ m/^text/ and $content_type !~ m/charset=/;
-    $self->res->headers->header('Content-Type', $content_type);
+    my $store = MojoX::Session::Store::MongoDB->new(
+        {   database   => 'v6test',
+            collection => 'sessions',
+        }
+    );
 
-    die $err if $err;
+    my $transport = MojoX::Session::Transport::Cookie->new
+      (domain => $self->app->config->base_domain);
 
-    return $rv;
+    my $session = MojoX::Session->new
+      (
+       tx => $self->tx,
+       store     => $store,
+       transport => $transport,
+       ip_match  => 0,
+       expires_delta => 86400 * 3,
+      );
+
+    if ($session->load) {
+        if ($session->is_expired) {
+            $session->flush;
+            $session->create;
+        }
+        else {
+            $session->extend_expires;
+        }
+    }
+    else {
+        $session->create;
+    }
+
+    $session->data(
+        token => do {
+            my $sha1 = Digest::SHA1->new;
+            $sha1->add($$, time, rand(time));
+            $sha1->hexdigest();
+        })
+      unless $session->data('token');
+
+    $session->flush();
+
+    $self->stash(session => $session);
+
+    return $self->{_session} = $session;
+}
+
+sub user {
+    my $self = shift;
+    warn "looking for user_id";
+    my $user_id = $self->session->data('user_id') or return;
+    warn "got user id: $user_id";
+    my $s = V6::DB->db->new_scope;
+    my $user = eval { V6::DB->db->lookup($user_id) };
+    warn "ERROR:", pp($@) if $@ and !$@->{missing} ;
+    return $user;
+}
+
+sub render_json {
+    my ($self, $json) = @_;
+    $self->{template} = 'render.json';
+    $self->stash->{json} = $json;
+    return $self->render();
 }
 
 1;

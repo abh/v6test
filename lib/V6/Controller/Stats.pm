@@ -10,7 +10,7 @@ sub index {
     my $self = shift;
     $self->res->headers->header('Cache-Control', 'private,max-age=0');
 
-    my $coll = V6::DB->collection;
+    my $coll = V6::DB->collection('results');
 
     my $data = {};
 

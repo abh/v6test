@@ -1,0 +1,7 @@
+% layout 'default';
+
+account!
+
+<%== $self->render_partial('_common/login_form'); %>
+
+

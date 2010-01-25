@@ -1,7 +1,7 @@
-/*! Copyright 2009 Ask Bjørn Hansen
+/*! Copyright 2009-2010 Ask Bjørn Hansen
     see http://www.v6test.develooper.com/
  */
-v6 = { "version": "1.02" };
+v6 = { "version": "1.10" };
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 4;
 v6.api_server = 'http://www.v6test.develooper.com/';

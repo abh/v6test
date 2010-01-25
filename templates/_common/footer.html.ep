@@ -5,6 +5,33 @@
        bandwidth from <a href="http://www.phyber.com/">Phyber</a>.
     </div>
 
+    <script type="text/javascript">
+       if (!v6s) { var v6s = { } }
+       v6s.token = '<%= my $t = $session->data('token'); $t %>';
+    </script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+% if ($self->app->mode eq 'development') {
+    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/site.js"></script>
+
+    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/jquery-cookie-2.1.js"></script>
+    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/v6test.js"></script>
+
+% } else {
+
+    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/site.js"></script>
+    <script type="text/javascript" src="<%= $self->app->config->base_url %>/js/v1/v6test.js"></script>
+% }
+
+    <script type="text/javascript">
+       v6.target = '<%= $widget_target %>';
+       if (!v6.target) { v6.only_once = true }
+       v6.api_server = '<%= $self->app->config->base_url %>';
+       v6.test();
+    </script>
+
+
 
 % if ($self->app->config->google_analytics) {
 <script type="text/javascript">

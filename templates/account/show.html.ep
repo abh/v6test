@@ -1,0 +1,33 @@
+% layout 'default';
+
+<p><a href="/account/logout">Logout</a></p>
+
+<h2>Account</h2>
+
+<p>
+Name: <%= $user->name %><br>
+Login providers:
+<ul>
+% for my $p (@{ $user->identities }) {
+   <li><%= $p->data->{providerName} %>: <%= $p->identifier %></li>
+% }
+</ul>
+</p>
+
+<h3>Sites</h3>
+
+<a id="link-add-site" href="/account/add">Add a site</a>
+
+<div id="add-site-wrapper">
+   <form id="add-site-form">
+      URL: <input type="url" name="url" placeholder="http://www.example.com/" size="50"><br>
+      <span class="example">For example http://www.example.com/</span><br>
+      <input type="submit" value="Add">
+   </form>
+
+</div>
+
+
+
+
+

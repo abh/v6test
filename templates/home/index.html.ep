@@ -1,24 +1,17 @@
+% $widget_target = 'v6_widget';
 % layout 'default';
 
     <p>Welcome to the IPv6 test widget server</p>
 
 % use Data::Dumper qw(Dumper);
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-% if ($self->app->mode eq 'development') {    
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/jquery-cookie-2.1.js"></script>
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/v6test.js"></script>
-% } else {
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/js/v1/v6test.js"></script>
-% }
+<div id="v6_widget"></div>
+
     <style>
-       #v6test { width: 250px; height: 200px;
-                 border: 2px solid blue;
-                 overflow: hidden;
-               }
+       #v6_widget { width: 250px; height: 200px;
+                    border: 2px solid blue;
+                    overflow: hidden;
+                  }
     </style>
-    <script type="text/javascript">
-       v6.hidden = false;
-       v6.api_server = '<%= $self->app->config->base_url %>';
-       v6.test();
-    </script>
+
+
