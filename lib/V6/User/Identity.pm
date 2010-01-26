@@ -25,7 +25,7 @@ has 'identifier' => (
 has 'user' => (
     isa      => 'V6::User',
     is       => 'rw',
-    weak_ref => 0,
+    weak_ref => 1,
 );
 
 has 'data' => (

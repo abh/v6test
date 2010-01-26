@@ -114,26 +114,27 @@ sub token {
     my $s = V6::DB->db->new_scope;
 
     my $identity = eval { V6::DB->db->lookup("identity:" . $user_data->{identifier}) };
+    my $user;
     unless ($identity) {
-        my $user = V6::User->new({identities => []});
+        $user = V6::User->new({identities => []});
         $identity = V6::User::Identity->new(
             data       => $user_data,
             identifier => $user_data->{identifier},
             user       => $user,
         );
-
-        push @{$identity->user->identities}, $identity;
+        $user->identities([$identity]);
     }
     else {
-        $identity->user( V6::User->new({identities => []}) )
-          unless $identity->user;
-
-        $identity->user->identities([uniq @{$identity->user->identities}]);
-
+        unless ($identity->user) {
+            $user = V6::User->new({identities => []});
+            $identity->user( $user );
+        }
+        $user = $identity->user;
+        $user->identities([uniq @{$identity->user->identities}]);
+        
         $identity->data($user_data);
     }
 
-    my $user = $identity->user;
     V6::DB->db->store($identity);
     my $user_id = V6::DB->db->store($user);    
 

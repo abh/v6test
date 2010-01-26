@@ -107,11 +107,12 @@ sub session {
 
 sub user {
     my $self = shift;
-    warn "looking for user_id";
     my $user_id = $self->session->data('user_id') or return;
-    warn "got user id: $user_id";
     my $s = V6::DB->db->new_scope;
     my $user = V6::User->lookup($user_id);
+    warn "USER: $user";
+    my $user = eval { V6::DB->db->lookup($user_id) };
+    warn "ERROR:", pp($@) if $@ and !$@->{missing} ;
     return $user;
 }
 
