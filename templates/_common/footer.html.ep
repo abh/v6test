@@ -1,4 +1,5 @@
     <div id="footer">
+       <a href="/account">Account</a> | 
        &copy; 2009 <a href="http://askask.com/">Ask Bjørn Hansen</a> (<a href="mailto:ask@develooper.com">@</a>),
        development by <a href="http://develooper.com/">Develooper</a>
           and <a href="http://www.localrobot.com/">Local Robot</a>, 
@@ -7,7 +8,8 @@
 
     <script type="text/javascript">
        if (!v6s) { var v6s = { } }
-       v6s.token = '<%= my $t = $session->data('token'); $t %>';
+% my $token = $session->data('token');
+       v6s.token = '<%= $token %>';
     </script>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>

@@ -11,6 +11,7 @@ our @EXPORT_OK = qw(
    run
    utf8_safe
    utf8_safe_tree
+   uniq
 );
 
 sub run {
@@ -49,5 +50,9 @@ sub utf8_safe_tree {
     $data;
 }
 
+sub uniq (@) {
+    my %h;
+    map { $h{$_}++ == 0 ? $_ : () } @_;
+}
 
 1;

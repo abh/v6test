@@ -23,9 +23,9 @@ has 'identifier' => (
 );
 
 has 'user' => (
-    isa => 'V6::User',
-    is  => 'rw',
-    required => 1,
+    isa      => 'V6::User',
+    is       => 'rw',
+    weak_ref => 0,
 );
 
 has 'data' => (
@@ -34,11 +34,18 @@ has 'data' => (
     required => 1,
 );
 
+before 'data' => sub {
+    my $self = shift;
+    $self->{data} && V6::Util::utf8_safe_tree( $self->{data} );
+};
+
 sub name {
     my $self = shift;
     return $self->data->{name}->{formatted}
       || $self->data->{displayName};
 }
+
+__PACKAGE__->meta->make_immutable;
 
 1;
 

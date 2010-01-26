@@ -111,8 +111,7 @@ sub user {
     my $user_id = $self->session->data('user_id') or return;
     warn "got user id: $user_id";
     my $s = V6::DB->db->new_scope;
-    my $user = eval { V6::DB->db->lookup($user_id) };
-    warn "ERROR:", pp($@) if $@ and !$@->{missing} ;
+    my $user = V6::User->lookup($user_id);
     return $user;
 }
 

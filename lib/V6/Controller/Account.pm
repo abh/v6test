@@ -12,6 +12,11 @@ use V6::Util qw(utf8_safe_tree);
 
 use Net::API::RPX ();
 
+use V6::Util qw(uniq);
+use Data::Dump qw(pp);
+
+use namespace::clean -except => 'meta';
+
 my $rpx = Net::API::RPX->new({api_key => V6->config->rpx_api_key});
 use Data::Dumper qw(Dumper);
 warn Dumper(\$rpx);
@@ -98,7 +103,6 @@ sub token {
     warn "USER DATA: ", Dumper(\$user_data);
 
     my $session = $self->session(1);
-    warn "SESSION : $session";
 
     # if user is already logged in and there's different user data
     #    does the new identifier already exist?
@@ -110,25 +114,31 @@ sub token {
     my $s = V6::DB->db->new_scope;
 
     my $identity = eval { V6::DB->db->lookup("identity:" . $user_data->{identifier}) };
-    warn "ERROR: ", $@;
     unless ($identity) {
+        my $user = V6::User->new({identities => []});
         $identity = V6::User::Identity->new(
             data       => $user_data,
             identifier => $user_data->{identifier},
-            user       => V6::User->new({identities => []}),
+            user       => $user,
         );
+
+        push @{$identity->user->identities}, $identity;
+    }
+    else {
+        $identity->user( V6::User->new({identities => []}) )
+          unless $identity->user;
+
+        $identity->user->identities([uniq @{$identity->user->identities}]);
+
+        $identity->data($user_data);
     }
 
     my $user = $identity->user;
     V6::DB->db->store($identity);
-    push @{ $user->identities }, $identity;
     my $user_id = V6::DB->db->store($user);    
-    warn Dumper(\$user_data);
 
     #my $verified_email = $trusted_providers{$user_data->{providerName}}
     #  && $user_data->{verifiedEmail};
-
-    warn "USER ID: ", $user_id;
 
     $session->data(user_id => $user_id);
     $session->flush;

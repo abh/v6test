@@ -30,7 +30,7 @@ sub startup {
 
     $self->routes->namespace('V6::Controller');
 
-    $self->types->type(html => 'text/html; charset=utf-8');
+    $self->types->type(html => 'text/html; charset=UTF-8');
 
     # Routes
     my $r = $self->routes;
