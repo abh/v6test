@@ -6,6 +6,7 @@ use Carp qw(croak);
 
 use Encode ();
 use Data::Transformer ();
+use Text::SimpleTable ();
 
 our @EXPORT_OK = qw(
    run
@@ -54,5 +55,18 @@ sub uniq (@) {
     my %h;
     map { $h{$_}++ == 0 ? $_ : () } @_;
 }
+
+sub format_leak_table {
+    my @objects = @_;
+    require Text::SimpleTable;
+    my $t = Text::SimpleTable->new( [ 60, 'Class' ], [ 8, 'Count' ] );
+    my %counts;
+    $counts{ref($_)}++ for @objects;
+    foreach my $class ( sort { $counts{$b} <=> $counts{$a} } keys %counts ) {
+        $t->row( $class, $counts{$class} );
+    }
+    return $t->draw;
+}
+
 
 1;

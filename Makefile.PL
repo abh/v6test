@@ -29,16 +29,24 @@ WriteMakefile(
                    'File::Find::Rule' => 0,
                    'Net::API::RPX' => 0,
                    'IO::Socket::SSL' => 0,  # For Net::API::RPX
+
+                   # For testing
+                   'Scope::Guard' => 0,
+                   'Text::SimpleTable' => 0, 
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );
 
-# Devel::Cover support
 sub MY::postamble {
-    qq/
-testcover :
-\tcover -delete && \
-\tHARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test && \
-\tcover
-/
+    return <<'MAKE_FRAG';
+
+.PHONY: testcover
+
+testcover:
+	cover -delete
+	HARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test
+	cover
+
+MAKE_FRAG
 }
+

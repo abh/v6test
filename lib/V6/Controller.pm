@@ -11,9 +11,9 @@ use MojoX::Session::Store::MongoDB;
 
 use base 'Mojolicious::Controller';
 
-#sub config {
-#    shift->app->config;
-#}
+sub config {
+    shift->app->config;
+}
 
 sub redirect {
     my $self = shift;
@@ -57,7 +57,9 @@ sub render {
 
 sub session {
     my $self = shift;
-    return $self->{_session} if $self->{_session};
+    if (my $session = $self->stash('session')) {
+        return $session;
+    }
 
     my $store = MojoX::Session::Store::MongoDB->new(
         {   database   => 'v6test',
@@ -102,16 +104,14 @@ sub session {
 
     $self->stash(session => $session);
 
-    return $self->{_session} = $session;
+    return $session;
 }
 
 sub user {
     my $self = shift;
     my $user_id = $self->session->data('user_id') or return;
-    my $s = V6::DB->db->new_scope;
+    warn "GOT USER_ID: $user_id";
     my $user = V6::User->lookup($user_id);
-    warn "USER: $user";
-    my $user = eval { V6::DB->db->lookup($user_id) };
     warn "ERROR:", pp($@) if $@ and !$@->{missing} ;
     return $user;
 }

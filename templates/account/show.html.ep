@@ -16,6 +16,13 @@ Login providers:
 
 <h3>Sites</h3>
 
+<ul>
+% for my $user_site ( @{ $user->user_sites } ) {
+<li><a href="/site?site=<%= $user_site->site->id %>"><%= $user_site->site->url %></a>
+    (<%= $user_site->verified ? 'Verified' : 'Not Verified' %>)</li>
+% }
+</ul>
+
 <a id="link-add-site" href="/account/add">Add a site</a>
 
 <div id="add-site-wrapper">

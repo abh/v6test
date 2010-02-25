@@ -40,6 +40,7 @@ has 'identities' => (
     required => 1,
 ); 
 
+
 sub BUILD {
     my ($self, $params) = @_;
     if ($self->identities) {
@@ -62,11 +63,26 @@ sub _check_identities {
     }
 }
 
-has 'sites' => (
+has 'user_sites' => (
     is      => 'rw',
-    isa     => 'ArrayRef[V6::Site]',
+    isa     => 'ArrayRef[V6::User::Site]',
     default => sub { [] },
 );
+
+sub sites {
+    my $self = shift;
+    map { $_->site } @{ $self->user_sites };
+}
+
+sub pending_sites {
+    my $self = shift;
+    map { $_->site } grep { !$_->verified } @{ $self->user_sites };
+}
+
+sub verified_sites {
+    my $self = shift;
+    map { $_->site } grep { $_->verified } @{ $self->user_sites };
+}
 
 sub name { 
     my $self = shift;

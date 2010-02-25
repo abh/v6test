@@ -6,7 +6,9 @@ use warnings;
 use base 'V6::Controller';
 use V6::DB;
 use V6::User;
+use V6::User::Site;
 use V6::User::Identity;
+use V6::Site;
 
 use V6::Util qw(utf8_safe_tree);
 
@@ -39,6 +41,7 @@ sub logout {
     $self->user(undef);
     $self->session->data(user_id => 0);
     $self->session->flush;
+    
     return $self->redirect('/');
 }
 
@@ -56,25 +59,37 @@ sub add {
     }
     my $url  = $self->req->param('url');
 
-#    if ($user->{sites}->{$url} and $user->{sites}->{$url}->{verified}) {
-#        # send user to the site page
-#    }
+    my $user = $self->user;
+
+    my $db = V6::DB->db;
+
+    if (my ($user_site) = grep { $_->site->url eq $url } @{ $user->user_sites } ) {
+        $self->stash->{user_site} = $user_site;
+        return $self->render_json({ url => $user_site->site->url, verified => $user_site->verified });
+    }
     
     # lookup if we already have a higher level page on the same domain and it's verified
     #  - add verified site and pass user there
+
+    my $site = V6::Site->lookup($url) || V6::Site->new({ url => $url });
+
+    my $user_site = V6::User::Site->new(site => $site, user => $user);
+    push @{ $user->user_sites }, $user_site;
+
+    $db->store($site);
+    $db->store($user);
 
 #    $user->{sites}->{$url} = {};
 #    $user->save;
     # send to verification page
 
-    return $self->render_json({ awesome => 'yes' });
+    return $self->render_json({ url => $site->url, verified => $user_site->verified });
 }
 
 sub verify_site {
     my $self = shift;
-
-    
-
+    my $url  = $self->req->param('url');
+    my $user = $self->user;
 }
 
 sub token {
@@ -110,8 +125,6 @@ sub token {
     #      login new identifier
     #    no?
     #      ask if new login should be added
-
-    my $s = V6::DB->db->new_scope;
 
     my $identity = eval { V6::DB->db->lookup("identity:" . $user_data->{identifier}) };
     my $user;
