@@ -1,7 +1,5 @@
 % layout 'default';
 
-% my $data = $self->stash('data');
-
 <p>
 
 <i>Total number of tests done:</i> <%= $data->{count} %>
