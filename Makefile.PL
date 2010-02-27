@@ -23,7 +23,6 @@ WriteMakefile(
                    'Beanstalk::Client' => 1.05,
                    'Moose'       => 0,
                    'MooseX::Singleton' => 0,
-                   'MooseX::Declare' => 0,
                    'Data::Transformer' => 0,
                    'File::HomeDir' => 0,
                    'File::Find::Rule' => 0,
