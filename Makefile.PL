@@ -19,7 +19,12 @@ WriteMakefile(
                    'MojoX::Session' => 0.15,
                    'File::Slurp' => 0,
                    'JSON::XS'    => 2.20,
-                   'MongoDB'     => 0.20,
+
+                   'MongoDB'     => 0.29,
+
+                   'KiokuDB'     => 0.35,
+                   'KiokuDB::Backend::MongoDB' => 0.01,
+
                    'Beanstalk::Client' => 1.05,
                    'Moose'       => 0,
                    'MooseX::Singleton' => 0,
