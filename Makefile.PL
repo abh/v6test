@@ -34,6 +34,8 @@ WriteMakefile(
                    'Net::API::RPX' => 0,
                    'IO::Socket::SSL' => 0,  # For Net::API::RPX
 
+                   'Data::Dump' => 0,
+
                    # For testing
                    'Scope::Guard' => 0,
                    'Text::SimpleTable' => 0, 

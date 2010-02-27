@@ -113,7 +113,7 @@ sub session {
 sub user {
     my $self = shift;
     my $user_id = $self->session->data('user_id') or return;
-    warn "GOT USER_ID: $user_id";
+    #warn "GOT USER_ID: $user_id";
     my $user = V6::User->lookup($user_id);
     warn "ERROR:", pp($@) if $@ and !$@->{missing} ;
     return $user;

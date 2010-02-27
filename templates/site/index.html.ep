@@ -43,8 +43,8 @@ Does your site have:<br>
 <%
  local $self->stash->{config};
 %>
-<textarea rows="12" cols="70" class="code ui-corner-all"
-><%= $self->render_partial('_common/code', config => { include_jquery => 1, ip_type => 'ipv4' })->to_string; %>
+<textarea rows="12" cols="70" class="code ui-corner-all">
+<%= $self->render_partial('_common/code', config => { include_jquery => 1, ip_type => 'ipv4' })->to_string; %>
 </textarea>
 </td>
 </tr>

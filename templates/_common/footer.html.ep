@@ -24,7 +24,7 @@
     <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/site.js"></script>
 % }
 
-% if ($self->req->url->path eq '/') {
+% if (0 && $self->req->url->path eq '/') {
 <%= $self->render_partial('_common/code', config => { } ); %>
 % }
 

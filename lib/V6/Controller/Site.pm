@@ -22,7 +22,8 @@ sub index {
     my $site = eval { V6::Site->lookup($site_id) };
     return 404 unless $site;
 
-    $self->stash('is_owner', $user && scalar grep { $site_id eq $_->id } @{ $user->sites } );
+    my $is_owner = $user && scalar grep { $site_id eq $_->id } @{ $user->sites };
+    $self->stash('is_owner', $is_owner);
     $self->stash('site', $site);
 
     return 404 unless $self->stash('is_owner') or $site->public_stats;
