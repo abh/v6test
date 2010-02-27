@@ -3,10 +3,6 @@ use Moose;
 use Data::Dump qw(pp);
 use namespace::clean -except => 'meta';
 
-with 'KiokuDB::Role::UUIDs';
-
-with "V6::Schema::ID";
-
 sub lookup {
     my ($class, $id) = @_;
     return unless $id;
@@ -21,14 +17,27 @@ sub kiokudb_object_id {
     return "site:" . $self->id;
 }
 
-sub id { shift->url }
+has id => (
+    isa    => 'Str',
+    is     => 'ro',
+    lazy_build => 1,
+);
+
+with "V6::Schema::ID",
+     "KiokuDB::Role::UUIDs" => { alias => { "generate_uuid" => "_build_id" } }; 
 
 # ==============
 
+has 'name' => (
+    isa      => 'Str',
+    is       => 'rw',
+    required => 1,
+);
 
-has 'url' => (
-    isa      => "Str",
-    is       => "ro",
+has 'urls' => (
+    traits   => ['Array'],
+    isa      => "ArrayRef[Str]",
+    is       => "rw",
     required => 1,
 );
 

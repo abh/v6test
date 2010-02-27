@@ -55,7 +55,7 @@ after 'identities' => sub {
 
 sub _check_identities {
     my ( $self, $identities ) = @_;
-    warn "IDENTITIES are: ", ref $identities, pp($identities);
+    #warn "IDENTITIES are: ", ref $identities, pp($identities);
     if ($identities) {
         for my $identity ( @{$identities} ) {
             $identity->user($self);
@@ -63,26 +63,26 @@ sub _check_identities {
     }
 }
 
-has 'user_sites' => (
+has 'sites' => (
     is      => 'rw',
-    isa     => 'ArrayRef[V6::User::Site]',
+    isa     => 'ArrayRef[V6::Site]',
     default => sub { [] },
 );
 
-sub sites {
-    my $self = shift;
-    map { $_->site } @{ $self->user_sites };
-}
+#sub sites {
+#    my $self = shift;
+#    map { $_->site } @{ $self->user_sites };
+#}
 
-sub pending_sites {
-    my $self = shift;
-    map { $_->site } grep { !$_->verified } @{ $self->user_sites };
-}
+#sub pending_sites {
+#    my $self = shift;
+#    map { $_->site } grep { !$_->verified } @{ $self->user_sites };
+#}
 
-sub verified_sites {
-    my $self = shift;
-    map { $_->site } grep { $_->verified } @{ $self->user_sites };
-}
+#sub verified_sites {
+#    my $self = shift;
+#    map { $_->site } grep { $_->verified } @{ $self->user_sites };
+#}
 
 sub name { 
     my $self = shift;

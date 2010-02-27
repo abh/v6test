@@ -1,0 +1,74 @@
+% layout 'default';
+
+<h1><%= $site->name || $site->id %></h1>
+
+<a href="/account">Back to account</a>
+
+<div id="tabs">
+  <ul>
+
+% if ($is_owner) {
+    <li><a href="#code">Get code</a></li>
+% }
+    <li><a href="#stats">Statistics</a></li>
+% if ($is_owner) {
+    <li><a href="#settings">Settings</a></li>
+% }
+    </ul>
+
+% if ($is_owner) {
+  <div id="code">
+<table>
+<tr>
+<td>
+<form id="code_config" action="/site/code" method="post">
+
+<input type="hidden" name="site" value="<%= $site->id %>">
+
+Does your site have:<br>
+   <input type="radio" id="ip_type_v4"  name="ip_type" value="ipv4" checked>
+      <label for="ip_type_v4"> IP v4 (A record only)</label><br>
+   <input type="radio" id="ip_type_v6"  name="ip_type" value="ipv6">
+      <label for="ip_type_v6"> IP v6 (AAAA record)</label><br>
+   <input type="radio" id="ip_type_v64" name="ip_type" value="ipv64">
+      <label for="ip_type_v64"> IP v4 and v6 (Both A and AAAA record)</label><br>
+
+<input type="checkbox" id="include_jquery" name="include_jquery" checked>
+<label for="include_jquery">Include jQuery?</label>
+
+</form>
+
+</td>
+<td>
+<%
+ local $self->stash->{config};
+%>
+<textarea rows="12" cols="70" class="code ui-corner-all"
+><%= $self->render_partial('_common/code', config => { include_jquery => 1, ip_type => 'ipv4' })->to_string; %>
+</textarea>
+</td>
+</tr>
+</table>
+
+  </div>
+% }
+
+  <div id="stats">
+    <p>Coming soon</p>
+  </div>
+
+% if ($is_owner) {
+  <div id="settings">
+    <p></p>
+    </div>
+% }
+
+</div>
+
+<%
+  for my $j (qw(jquery.ui.core.min.js jquery.ui.widget.min.js jquery.ui.tabs.min.js)) {
+     push @$js, $self->config->cdn_url . 'libs/jqueryui/1.8/ui/minified/' . $j;
+  }
+  push @$js, $self->config->cdn_url . 'libs/jquery-plugins/jquery.form.js';
+
+%>

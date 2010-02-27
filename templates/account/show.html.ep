@@ -16,19 +16,16 @@ Login providers:
 
 <h3>Sites</h3>
 
-<ul>
-% for my $user_site ( @{ $user->user_sites } ) {
-<li><a href="/site?site=<%= $user_site->site->id %>"><%= $user_site->site->url %></a>
-    (<%= $user_site->verified ? 'Verified' : 'Not Verified' %>)</li>
-% }
-</ul>
+<div id="site_list">
+  <%== $self->render_partial('account/site_list'); %>
+</div>
 
 <a id="link-add-site" href="/account/add">Add a site</a>
 
 <div id="add-site-wrapper">
    <form id="add-site-form">
-      URL: <input type="url" name="url" placeholder="http://www.example.com/" size="50"><br>
-      <span class="example">For example http://www.example.com/</span><br>
+      Name: <input type="text" name="name" placeholder="My Site, example.com, ..." size="50"><br>
+      <span class="example">For example "NTP Pool" or "www.pool.ntp.org"</span><br>
       <input type="submit" value="Add">
    </form>
 

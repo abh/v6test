@@ -1,0 +1,30 @@
+<%
+  my $cdn_url  = $self->app->config->cdn_url;
+  my $base_url = $self->app->config->base_url( $config->{ip_type} );
+  if ($config->{widget}) {
+         
+  }   
+
+if ($config->{include_jquery}) { %>
+%   if ($self->app->mode eq 'development') {
+<script type="text/javascript" src="<%= $cdn_url %>libs/jquery/1.4.2/jquery.min.js"></script>
+%   } else {
+<script type="text/javascript" src="<%= $base_url %>/cdn/libs/jquery/1.4.2/jquery.min.js"></script>
+%   }
+% }
+% if ($self->app->mode eq 'development') {
+<script type="text/javascript" src="<%= $cdn_url %>libs/jqueryui/1.8/external/jquery.cookie.js"></script>
+<script type="text/javascript" src="<%= $base_url %>/devel/v6test.js"></script>
+% } else {
+<script type="text/javascript" src="<%= $base_url %>/js/v1/v6test.js"></script>
+% }
+
+<script type="text/javascript">
+   // v6.target = '<%= $widget_target %>';
+   if (!v6.target) { v6.only_once = true }
+   v6.site = '<%= $site->id %>';
+   v6.api_server = '<%= $self->app->config->base_url($config->{ip_type}) %>';
+   try {
+     v6.test();
+   } catch(err) {}
+</script>

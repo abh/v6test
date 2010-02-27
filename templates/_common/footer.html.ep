@@ -1,6 +1,6 @@
     <div id="footer">
        <a href="/account">Account</a> | 
-       &copy; 2009 <a href="http://askask.com/">Ask Bjørn Hansen</a> (<a href="mailto:ask@develooper.com">@</a>),
+       &copy; 2009-2010 <a href="http://askask.com/">Ask Bjørn Hansen</a> (<a href="mailto:ask@develooper.com">@</a>),
        development by <a href="http://develooper.com/">Develooper</a>
           and <a href="http://www.localrobot.com/">Local Robot</a>, 
        bandwidth from <a href="http://www.phyber.com/">Phyber</a>.
@@ -12,28 +12,21 @@
        v6s.token = '<%= $token %>';
     </script>
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+% unshift @$js, $self->config->cdn_url . 'libs/jquery/1.4/jquery.min.js';
+
+% for my $j (@$js) {
+    <script type="text/javascript" src="<%= $j %>"></script>
+% }
 
 % if ($self->app->mode eq 'development') {
     <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/site.js"></script>
-
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/jquery-cookie-2.1.js"></script>
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/v6test.js"></script>
-
 % } else {
-
     <script type="text/javascript" src="<%= $self->app->config->base_url %>/devel/site.js"></script>
-    <script type="text/javascript" src="<%= $self->app->config->base_url %>/js/v1/v6test.js"></script>
 % }
 
-    <script type="text/javascript">
-       v6.target = '<%= $widget_target %>';
-       if (!v6.target) { v6.only_once = true }
-       v6.api_server = '<%= $self->app->config->base_url %>';
-       v6.test();
-    </script>
-
-
+% if ($self->req->url->path eq '/') {
+<%= $self->render_partial('_common/code', config => { } ); %>
+% }
 
 % if ($self->app->config->google_analytics) {
 <script type="text/javascript">

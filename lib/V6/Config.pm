@@ -10,7 +10,16 @@ use File::HomeDir;
 
 my $json = JSON::XS->new->relaxed(1);
 
-has 'base_url' =>
+sub base_url {
+    my $self = shift;
+    my $host = shift;
+    my $url  = $self->_base_url;
+    return $url unless $host;
+    $url =~ s/www/$host/;
+    return $url;
+}
+
+has '_base_url' =>
     ( is      => 'rw',
       isa     => 'Str',
       lazy    => 1,
@@ -59,6 +68,14 @@ has 'rpx_api_key' =>
       isa     => 'Str',
       lazy    => 1,
       default => sub { $_[0]->_config_hash()->{rpx_api_key} || 0 },
+    );
+
+has 'cdn_url' =>
+    ( is      => 'rw',
+      isa     => 'Str',
+      lazy    => 1,
+      # http://ajax.googleapis.com/ajax/
+      default => sub { $_[0]->_config_hash()->{cdn_url} || 'http://st.pimg.net/cdn/' },
     );
 
 

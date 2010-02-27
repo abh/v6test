@@ -2,6 +2,32 @@
     see http://www.v6test.develooper.com/
  */
 
+  v6s.escape_html = function(text) {
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  v6s.unescape_html = function(text) {
+    return text.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+  }
+
+  $.fn.template = function(str, data) {
+    var fn = new Function('obj',
+      'var p=[],print=function(){p.push.apply(p,arguments);};' +
+      'with(obj){p.push(\'' +
+      str
+        .replace(/[\r\t\n]/g, " ")
+        .split("<%").join("\t")
+        .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+        .replace(/\t==(.*?)%>/g, "',$1,'")
+        .replace(/\t=(.*?)%>/g, "', YP.escape_html($1),'")
+        .split("\t").join("');")
+        .split("%>").join("p.push('")
+        .split("\r").join("\\'")
+    + "');}return p.join('');");
+    return data ? fn(data) : fn;
+  };
+
+
 $(document).ready(function () {
    $('#link-add-site').click(function(event) {
       event.preventDefault();
@@ -10,13 +36,37 @@ $(document).ready(function () {
    });
 
    var $add_site_form = $("#add-site-form");
-   $add_site_form.find('input:submit').click(function(event) {  
+   $add_site_form.find('input:submit').click(function(event) {
       event.preventDefault();
-      var url = $add_site_form.find('input[name="url"]').val();
+      var name = $add_site_form.find('input[name="name"]').val();
       $.getJSON('/account/add',
-                { 'token': v6s.token, 'url': url },
-                function(data, textStatus) { 
-                console.log("data", data); }
+                { 'token': v6s.token, 'name': name },
+                function(data, textStatus) {
+                    $('#site_list').html(data.site_list);
+                    // console.log("data", data); 
+                }
       );
    });
+
+
+   if ($('#tabs').length) {
+      $('#tabs').tabs();
+   }
+
+   if ($('#code_config').length) {
+       var form_options = 
+           { success: function(response, status, xhr, $form) {
+                          var code = response.code;
+                          $('textarea.code').html( v6s.escape_html(code) );
+             },
+             beforeSubmit: function() {
+                 $('textarea.code').html('Loading ...');
+             }         
+           };
+                                
+       $('#code_config').change(function() {
+           $('#code_config').ajaxSubmit(form_options);
+       });
+   }
+
 });

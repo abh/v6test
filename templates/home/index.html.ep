@@ -3,8 +3,6 @@
 
     <p>Welcome to the IPv6 test widget server</p>
 
-% use Data::Dumper qw(Dumper);
-
 <div id="v6_widget"></div>
 
     <style>

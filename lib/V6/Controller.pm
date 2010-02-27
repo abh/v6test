@@ -52,6 +52,9 @@ sub render {
     my $self = shift;
     $self->stash('widget_target' => '') unless $self->stash('widget_target');
     $self->stash('session' => $self->session) unless $self->stash('session');
+    $self->stash('js' => []) unless $self->stash('js');
+
+    $self->stash->{user} = $self->user;
     return $self->SUPER::render(@_);
 }
 

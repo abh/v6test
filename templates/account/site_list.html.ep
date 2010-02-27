@@ -1,0 +1,7 @@
+<ul>
+% for my $site ( @{ $user->sites } ) {
+<li>
+   <a href="/site?site=<%= $site->id %>"><%= $site->name || $site->id %></a>
+</li>
+% }
+</ul>

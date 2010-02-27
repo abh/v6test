@@ -6,7 +6,6 @@ use warnings;
 use base 'V6::Controller';
 use V6::DB;
 use V6::User;
-use V6::User::Site;
 use V6::User::Identity;
 use V6::Site;
 
@@ -28,7 +27,6 @@ my %trusted_providers = map { $_ => 1 } qw(Google Yahoo!);
 sub index {
     my $self = shift;
     if ($self->user) {
-        $self->stash->{user} = $self->user;
         return $self->render('account/show');
     }
     $self->session;
@@ -57,33 +55,29 @@ sub add {
     unless ($token and $session_token and $token eq $session_token) {
         return $self->render_json({ error => 'Invalid token' });
     }
-    my $url  = $self->req->param('url');
+    my $name  = $self->req->param('name');
 
     my $user = $self->user;
 
     my $db = V6::DB->db;
 
-    if (my ($user_site) = grep { $_->site->url eq $url } @{ $user->user_sites } ) {
-        $self->stash->{user_site} = $user_site;
-        return $self->render_json({ url => $user_site->site->url, verified => $user_site->verified });
-    }
+    #if (my ($user_site) = grep { $_->site->url eq $url } @{ $user->user_sites } ) {
+    #    $self->stash->{user_site} = $user_site;
+    #    return $self->render_json({ url => $user_site->site->url, verified => $user_site->verified });
+    #}
     
     # lookup if we already have a higher level page on the same domain and it's verified
     #  - add verified site and pass user there
 
-    my $site = V6::Site->lookup($url) || V6::Site->new({ url => $url });
-
-    my $user_site = V6::User::Site->new(site => $site, user => $user);
-    push @{ $user->user_sites }, $user_site;
+    my $site = V6::Site->new({ name => $name, urls => [] });
+    push @{ $user->sites }, $site;
 
     $db->store($site);
     $db->store($user);
 
-#    $user->{sites}->{$url} = {};
-#    $user->save;
-    # send to verification page
+    my $list = $self->render_partial('account/site_list');
 
-    return $self->render_json({ url => $site->url, verified => $user_site->verified });
+    return $self->render_json({ name => $site->name, id => $site->id, site_list => $list });
 }
 
 sub verify_site {

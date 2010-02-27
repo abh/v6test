@@ -13,40 +13,42 @@ use namespace::clean -except => 'meta';
 
 sub index {
     my $self = shift;
-    my $site_url = $self->param('site');
-    warn "URL: ", $site_url;
+    my $site_id = $self->param('site');
+
 
     my $db = V6::DB->db;
     my $user = $self->user;
 
-    my ($user_site) = grep { $_->site->url eq $url } @{ $user->user_sites };
-    # if verified, show the details page
-    
-    # not verified, so:
-    #   show the user-id / meta information
+    my $site = eval { V6::Site->lookup($site_id) };
+    return 404 unless $site;
 
-    # link to "check" page
-    
+    $self->stash('is_owner', $user && scalar grep { $site_id eq $_->id } @{ $user->sites } );
+    $self->stash('site', $site);
+
+    return 404 unless $self->stash('is_owner') or $site->public_stats;
+
+    return $self->render;
     
 }
 
-sub verification_html {
+sub code {
+    my $self = shift;
+    my $site_id = $self->param('site');
 
-}
+    my $site = eval { V6::Site->lookup($site_id) };
+    return 404 unless $site;
 
-sub check {
-    # get user_id from session
-    # get url from parameter
-    # check verification, get meta tag / get html page
+    my $config = { };
+    
+    for my $f (qw(include_jquery ip_type)) {
+        $config->{$f} = $self->param($f);
+    }
+    $self->stash(config => $config);
+    $self->stash(site   => $site);
 
-    # if valid,
-    #    mark verified 
-    #    go to details page
+    my $code = $self->render_partial('_common/code');
 
-    # if not valid
-    #    mark bad
-    #    go to show verification info page
-
+    return $self->render_json({ code => $code });
 }
 
 1;

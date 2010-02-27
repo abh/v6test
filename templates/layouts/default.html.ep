@@ -1,7 +1,8 @@
 <!doctype html><html>
   <head>
     <title>IPv6 Test widget</title>
-    <link type="text/css" href="/yui/reset-base-min.css" rel="Stylesheet" />
+    <link type="text/css" href="<%= $self->config->cdn_url %>libs/css/yui/reset-base-fonts-min.css" rel="Stylesheet" />
+    <link type="text/css" href="<%= $self->config->cdn_url %>libs/jqueryui/1.8/themes/ui-lightness/jquery.ui.all.css" rel="Stylesheet" />
 % if ($self->app->mode eq 'development') {
     <link type="text/css" href="/css/master.css" rel="Stylesheet" />
 % } else {
@@ -13,8 +14,6 @@
     <div id="content">
     <%== content %>
     </div>
-
-     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 
     <%== $self->render_partial('_common/footer'); %>
   </body>
