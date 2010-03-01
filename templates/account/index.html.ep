@@ -1,7 +1,7 @@
 % layout 'default';
 
 You must login to see your account. You can login with OpenID, Google,
-Yahoo and other accounts.
+Yahoo and other accounts. <noscript>(Javascript required, sorry!</noscript>
    
 <%== $self->render_partial('_common/login_form'); %>
 
