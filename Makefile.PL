@@ -15,7 +15,7 @@ WriteMakefile(
     AUTHOR       => 'Ask Bjørn Hansen <ask@develooper.com>',
     EXE_FILES => ['script/v6'],
     PREREQ_PM => { 'Mojo' => '0.9003',
-                   'MojoX::Session::Store::MongoDB' => 0.51,
+                   'MojoX::Session::Store::MongoDB' => 0.52,
                    'MojoX::Session' => 0.15,
                    'File::Slurp' => 0,
                    'JSON::XS'    => 2.20,

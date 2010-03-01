@@ -65,7 +65,7 @@ sub session {
     }
 
     my $store = MojoX::Session::Store::MongoDB->new(
-        {   database   => 'v6test',
+        {   mongodb    => V6::DB->mongodb,
             collection => 'sessions',
         }
     );
