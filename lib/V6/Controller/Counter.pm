@@ -59,6 +59,9 @@ sub json {
     my $params = $self->req->params->to_hash;
     use Data::Dumper qw(Dumper);
 
+    my $host = $self->req->headers->host || '';
+    $host =~ s/:\d+$//;
+
     my $data = { map { $_ => $params->{$_} } grep { m/^ipv\d+/ } keys %$params };
     $data->{'user-agent'} = $self->req->headers->user_agent;
     $data->{'referrer'}   = $self->req->headers->header('referer');
@@ -67,6 +70,7 @@ sub json {
     $data->{'time'}       = time;
     $data->{'v6uq'}       = $params->{v6uq};
     $data->{'version'}    = $params->{version};
+    $data->{'host'}       = $host;
 
     warn Dumper(\$data); # , \$self);
 
