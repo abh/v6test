@@ -3,10 +3,9 @@ use strict;
 use warnings;
 use JSON::XS;
 use File::Slurp qw(read_file);
-use Moose;
 use MooseX::Singleton;
 use File::HomeDir;
-
+use namespace::clean;
 
 my $json = JSON::XS->new->relaxed(1);
 

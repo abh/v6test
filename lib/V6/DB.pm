@@ -5,7 +5,6 @@ use MongoDB;
 use KiokuDB::Backend::MongoDB;
 use Carp qw(croak);
 
-
 has mongodb => (
     is   => 'ro',
     isa  => 'MongoDB::Database',
@@ -14,7 +13,7 @@ has mongodb => (
 
 sub _build_mongodb {
 
-    my $mongodb = MongoDB::Connection->new( %{ V6->config->mongodb_config } );
+    my $mongodb = MongoDB::Connection->new( %{ V6::Config->new->mongodb_config } );
 
     my $db = $mongodb->get_database('v6test');
 }
