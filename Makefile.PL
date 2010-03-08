@@ -36,6 +36,7 @@ WriteMakefile(
 
                    'Geo::IP'    => 0,
                    'Data::Dump' => 0,
+                   'Clone'      => 0,
 
                    # For testing
                    'Scope::Guard' => 0,

@@ -69,7 +69,6 @@ sub statistics {
     #warn pp($stats);
 
     if ($self->param('html')) {
-        warn "stashing stats ...";
         $self->stash('stats' => $stats);
         return $self->render('site/statistics');
     }
