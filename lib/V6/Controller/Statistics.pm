@@ -9,7 +9,7 @@ use V6::Summarizer;
 
 sub index {
     my $self = shift;
-    $self->res->headers->header('Cache-Control', 'private,max-age=0');
+    $self->res->headers->header('Cache-Control', 'max-age=900');
 
     my $coll = V6::DB->collection('results');
 
