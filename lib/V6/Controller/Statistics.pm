@@ -1,4 +1,4 @@
-package V6::Controller::Stats;
+package V6::Controller::Statistics;
 
 use strict;
 use warnings;
