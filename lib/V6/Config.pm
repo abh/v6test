@@ -42,6 +42,16 @@ has 'beanstalk_server' =>
       default => sub { $_[0]->_config_hash()->{beanstalk_server} || '127.0.0.1' },
     );
 
+has 'mongodb_config' =>
+    ( is      => 'rw',
+      isa     => 'HashRef',
+      lazy    => 1,
+      auto_deref => 1, 
+      default => sub { my $h = $_[0]->_config_hash()->{mongodb_config};
+                       $h ? $h : { host => 'localhost', port => 27017 };
+                   },
+    );
+
 has 'google_analytics' =>
     ( is      => 'rw',
       isa     => 'Str',

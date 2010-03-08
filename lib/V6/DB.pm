@@ -14,10 +14,7 @@ has mongodb => (
 
 sub _build_mongodb {
 
-    #warn "$$ Building a new db connection...";
-
-    # TODO: get db connection info from config...
-    my $mongodb = MongoDB::Connection->new(host => 'localhost', port => 27017);
+    my $mongodb = MongoDB::Connection->new( %{ V6->config->mongodb_config } );
 
     my $db = $mongodb->get_database('v6test');
 }
