@@ -1,15 +1,51 @@
 % $widget_target = 'v6_widget';
 % layout 'default';
 
-    <p>Welcome to the IPv6 test widget server</p>
+<h2>IPv6/IPv4 connectivity test system</h2>
 
-<div id="v6_widget"></div>
+<p>This project is testing web
+users' <a href="http://en.wikipedia.org/wiki/IPv4_address_exhaustion">IPv4</a>
+and <a href="http://en.wikipedia.org/wiki/IPv6">IPv6</a> connectivity.
+The goals are to track the adoption of IPv6 and the number of users
+who have trouble connecting to servers with both A and AAAA records.</p>
 
-    <style>
-       #v6_widget { width: 250px; height: 200px;
-                    border: 2px solid blue;
-                    overflow: hidden;
-                  }
-    </style>
+<dl class="faq">
+<dt>What are the current statistics?</dt>
+<dd> See the global <a href="/statistics">statistics page</a>. </dd>
+
+<dt>How can I help?</dt>
+<dd> Create <a href="/account">an account</a> and install the
+     javascript widget on your site. </dd>
+
+<dt>How does the system work?</dt>
+<dd> A bit of javascript inserts image tags for three 1x1 pixel gifs. The images
+     are hosted on servers with IPv4 only, IPv6 and IPv6+IPv4 DNS records.  The
+     javascript sends the results back to the server.
+</dd>
+
+<dt>What information is tracked?</dt>
+<dd> The response time of each image request and the (external/public)
+     IPs the user used to access the test server.  We also store the
+     'http referer', the ID of the site, the time of the test.  The
+     javascript sets a 'v6uq' cookie in your domain for 28 days to
+     prevent the test from running more than about once a month per
+     user.  The value of this cookie is also stored.
+</dd>
+
+<dt> What information is made public? </dt>
+<dd> The statistics from any one site are only used in aggregate for
+     the global statistics unless the site owner enables "public
+     statistics" for the site.
+</dd>
+
+<dt>Is the code for the system available?</dt>
+
+<dd> Yes, it is <a href="http://git.develooper.com/?p=v6test.git;a=summary">in git</a>. </dd>
+
+<dt> Contact? </dt>
+<dd> Email <a href="mailto:ask@develooper.com">Ask Bjørn Hansen</a>. </dd>
+
+</dl> 
+
 
 

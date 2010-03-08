@@ -48,5 +48,6 @@ textarea.code {
    font-family: 'Lucida Grande';
    font-size: 11px;
    float: right;
-   
 }
+
+dl.faq dt { font-weight: bold; }
