@@ -2,7 +2,6 @@
 
 <p>
 
-<i>Total number of tests done:</i> <%= $data->{count} %>
-
+%= $self->render_partial('_common/statistics_table');
 
 </p>

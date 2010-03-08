@@ -5,6 +5,7 @@ use warnings;
 
 use base 'V6::Controller';
 use V6::DB;
+use V6::Summarizer;
 
 sub index {
     my $self = shift;
@@ -12,11 +13,11 @@ sub index {
 
     my $coll = V6::DB->collection('results');
 
-    my $data = {};
+    my $summ = V6::Summarizer->new;
+    my $stats = $summ->stats_by_month();
 
-    $data->{count} = $coll->count;
-    $self->stash('data', $data);
-    return $self->render(data => $data);
+    $self->stash('stats', $stats);
+    return $self->render();
 }
 
 1;
