@@ -50,7 +50,7 @@ $(document).ready(function () {
 
 
    if ($('#tabs').length) {
-      $('#tabs').tabs();
+      $('#tabs').tabs({remote: true});
    }
 
    if ($('#code_config').length) {

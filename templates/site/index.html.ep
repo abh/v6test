@@ -10,7 +10,7 @@
 % if ($is_owner) {
     <li><a href="#code">Get code</a></li>
 % }
-    <li><a href="#stats">Statistics</a></li>
+    <li><a href="/site/statistics?site=<%= $site->id %>;html=1" title="Statistics">Statistics</a></li>
 % if ($is_owner) {
     <li><a href="#settings">Settings</a></li>
 % }
@@ -53,13 +53,10 @@ Does your site have:<br>
   </div>
 % }
 
-  <div id="stats">
-    <p>Coming soon</p>
-  </div>
 
 % if ($is_owner) {
   <div id="settings">
-    <p></p>
+    <p>Coming soon...</p>
     </div>
 % }
 

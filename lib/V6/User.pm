@@ -91,6 +91,14 @@ sub name {
     return $name || '';
 }
 
+sub is_owner {
+    my $self = shift;
+    my $site = shift;
+    my $site_id = ref $site ? $site->id : $site;
+
+    return scalar grep { $site_id eq $_->id } @{ $self->sites };
+}
+
 __PACKAGE__->meta->make_immutable;
 
 1;

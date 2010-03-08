@@ -41,6 +41,8 @@ textarea {
 
 table,th,td { border: 0px }
 
+table.statistics { text-align: right }
+
 textarea.code {
    border: 1px solid #555;
    font-family: 'Lucida Grande';

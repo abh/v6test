@@ -27,13 +27,14 @@ WriteMakefile(
 
                    'Beanstalk::Client' => 1.05,
                    'Moose'       => 0,
-                   'MooseX::Singleton' => 0,
+                   'MooseX::Singleton' => 0.22,
                    'Data::Transformer' => 0,
                    'File::HomeDir' => 0,
                    'File::Find::Rule' => 0,
                    'Net::API::RPX' => 0,
                    'IO::Socket::SSL' => 0,  # For Net::API::RPX
 
+                   'Geo::IP'    => 0,
                    'Data::Dump' => 0,
 
                    # For testing

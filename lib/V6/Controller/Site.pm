@@ -22,7 +22,7 @@ sub index {
     my $site = eval { V6::Site->lookup($site_id) };
     return 404 unless $site;
 
-    my $is_owner = $user && scalar grep { $site_id eq $_->id } @{ $user->sites };
+    my $is_owner = $user && $user->is_owner($site_id);
     $self->stash('is_owner', $is_owner);
     $self->stash('site', $site);
 
@@ -51,6 +51,32 @@ sub code {
 
     return $self->render_json({ code => $code });
 }
+
+
+sub statistics {
+    my $self = shift;
+    my $site_id = $self->param('site');
+
+    my $site = eval { V6::Site->lookup($site_id) };
+    return 404 unless $site;
+
+    return $self->render_json( { error => 'Forbidden' } )
+      unless ($site->public_stats or ($self->user and $self->user->is_owner($site)));
+
+    my $stats = $site->stats_by_month;
+
+    use Data::Dump qw(pp);
+    #warn pp($stats);
+
+    if ($self->param('html')) {
+        warn "stashing stats ...";
+        $self->stash('stats' => $stats);
+        return $self->render('site/statistics');
+    }
+
+    return $self->render_json( { stats => $stats } );
+}
+
 
 1;
 

@@ -1,6 +1,7 @@
 package V6::Site;
 use Moose;
 use Data::Dump qw(pp);
+use V6::Summarizer;
 use namespace::clean -except => 'meta';
 
 sub lookup {
@@ -47,6 +48,11 @@ has 'public_stats' => (
     default  => 0,
 );
 
+sub stats_by_month {
+    my $self = shift;
+    my $summ = V6::Summarizer->new;
+    return $summ->stats_by_month({ site_id => $self->id });
+}
 
 __PACKAGE__->meta->make_immutable;
 

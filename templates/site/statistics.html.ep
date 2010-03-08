@@ -1,0 +1,27 @@
+
+% my $totals = $stats->[-1];
+
+Total number of tests: <%= $totals->{total} %><br>
+
+Tests with IPv6 support: <%= $totals->{ipv6_percent} || 0 %>%<br>
+Tests failing the dual-record (A+AAAA) test: <%= $totals->{no_ipv64_percent} || 0 %>%<br>
+
+<table class="statistics">
+<th>Month</th>
+<th>Tests</th>
+<th>IPv6</th>
+<th>No 4+6</th> 
+% for my $s (@$stats) {
+<tr>
+<td> <%= $s->{date} eq 'totals' ? 'Total' : $s->{date} %> </td>
+<td> <%= $s->{total} %> </td>
+<td> <%= $s->{ipv6_percent} %>% </td>
+<td> <%= $s->{no_ipv64_percent} %>% </td>
+</tr>
+% }
+
+</table>
+
+
+
+

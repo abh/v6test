@@ -14,7 +14,7 @@ has mongodb => (
 
 sub _build_mongodb {
 
-    warn "$$ Building a new db connection...";
+    #warn "$$ Building a new db connection...";
 
     # TODO: get db connection info from config...
     my $mongodb = MongoDB::Connection->new(host => 'localhost', port => 27017);
@@ -44,5 +44,11 @@ sub _build_db {
     return $d;
 }
 
+sub disconnect {
+    my $self = shift;
+    warn "$$ disconnecting";
+    $self->db(undef);
+    $self->_clear_instance;
+}
 
 1;

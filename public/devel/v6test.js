@@ -3,7 +3,7 @@
  */
 v6 = { "version": "1.20" };
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
-v6.timeout = 4;
+v6.timeout = 6;
 v6.api_server = 'http://www.v6test.develooper.com/';
 
 var $target;
@@ -24,7 +24,7 @@ v6.submit_results = function() {
     var v6uq = $.cookie('v6uq');
     if (!v6uq) {
         v6uq = v6.uuid();
-        $.cookie('v6uq', v6uq, { expires: 7, path: cookie_path });
+        $.cookie('v6uq', v6uq, { expires: 28, path: cookie_path });
     }
 
     var q = "version=" + v6.version;
