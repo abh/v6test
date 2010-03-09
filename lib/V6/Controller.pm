@@ -5,10 +5,6 @@ use warnings;
 
 use Data::Dump qw(pp);
 
-use MojoX::Session;
-use MojoX::Session::Transport::Cookie;
-use MojoX::Session::Store::MongoDB;
-
 use base 'Mojolicious::Controller';
 
 sub config {
@@ -50,69 +46,32 @@ sub _redirect {
 
 sub render {
     my $self = shift;
-    $self->stash('widget_target' => '') unless $self->stash('widget_target');
-    $self->stash('session' => $self->session) unless $self->stash('session');
     $self->stash('js' => []) unless $self->stash('js');
 
     $self->stash->{user} = $self->user;
+    my $session = $self->session;
+    use Data::Dump qw(pp);
+    warn pp($session);
     return $self->SUPER::render(@_);
 }
 
-sub session {
+sub token {
     my $self = shift;
-    if (my $session = $self->stash('session')) {
-        return $session;
-    }
 
-    my $store = MojoX::Session::Store::MongoDB->new(
-        {   mongodb    => V6::DB->mongodb,
-            collection => 'sessions',
-        }
-    );
+    return '' unless $self->session->{user_id};
+    
+    $session->{token} ||= do {
+        my $sha1 = Digest::SHA1->new;
+        $sha1->add($$, time, rand(time));
+        $sha1->hexdigest();
+    };
 
-    my $transport = MojoX::Session::Transport::Cookie->new
-      (domain => $self->app->config->base_domain);
-
-    my $session = MojoX::Session->new
-      (
-       tx => $self->tx,
-       store     => $store,
-       transport => $transport,
-       ip_match  => 0,
-       expires_delta => 86400 * 3,
-      );
-
-    if ($session->load) {
-        if ($session->is_expired) {
-            $session->flush;
-            $session->create;
-        }
-        else {
-            $session->extend_expires;
-        }
-    }
-    else {
-        $session->create;
-    }
-
-    $session->data(
-        token => do {
-            my $sha1 = Digest::SHA1->new;
-            $sha1->add($$, time, rand(time));
-            $sha1->hexdigest();
-        })
-      unless $session->data('token');
-
-    $session->flush();
-
-    $self->stash(session => $session);
-
-    return $session;
+    return $session->{token};
 }
 
 sub user {
     my $self = shift;
-    my $user_id = $self->session->data('user_id') or return;
+    my $user_id = $self->session->{'user_id'} or return;
     #warn "GOT USER_ID: $user_id";
     my $user = V6::User->lookup($user_id);
     warn "ERROR:", pp($@) if $@ and !$@->{missing} ;

@@ -8,7 +8,7 @@
 
     <script type="text/javascript">
        if (!v6s) { var v6s = { } }
-% my $token = $session->data('token');
+% my $token = $self->session->{token};
        v6s.token = '<%= $token %>';
     </script>
 

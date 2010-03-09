@@ -19,8 +19,8 @@ if ($config->{include_jquery}) { %>
 <script type="text/javascript" src="<%= $base_url %>/js/v1/v6test.js"></script>
 % }
 
+%  # // v6.target = '';
 <script type="text/javascript">
-   // v6.target = '<%= $widget_target %>';
    if (!v6.target) { v6.only_once = true }
    v6.site = '<%= $site->id %>';
    v6.api_server = '<%= $self->app->config->base_url($config->{ip_type}) %>';

@@ -87,6 +87,13 @@ has 'cdn_url' =>
       default => sub { $_[0]->_config_hash()->{cdn_url} || 'http://st.pimg.net/cdn/' },
     );
 
+has 'secret' =>
+    ( is      => 'ro',
+      isa     => 'Str',
+      lazy    => 1,
+      default => sub { $_[0]->_config_hash()->{secret} },
+    );
+
 
 has '_config_hash' => (
     is      => 'rw',

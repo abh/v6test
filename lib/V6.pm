@@ -5,6 +5,7 @@ use warnings;
 
 our $VERSION = '0.10';
 
+use Mojolicious '0.999922';
 use base 'Mojolicious';
 
 use V6::Config;
@@ -57,6 +58,8 @@ sub startup {
 
     # force loading the config on startup
     $self->config;
+
+    $self->secret( $self->config->secret );
 
     $self->static(bless $self->static, 'V6::Static::Dispatcher');
 

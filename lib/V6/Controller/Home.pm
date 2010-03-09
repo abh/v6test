@@ -8,7 +8,6 @@ use base 'V6::Controller';
 # This action will render a template
 sub index {
     my $self = shift;
-    $self->stash('widget_target' => '#v6_widget');
     $self->render();
 }
 

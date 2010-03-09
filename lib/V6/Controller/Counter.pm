@@ -46,7 +46,7 @@ sub _remote_ip {
 
 sub ip {
     my $self = shift;
-    my $rand = my $js = _json->encode({ip => $self->_remote_ip});
+    my $rand = my $js = _json->encode({ip => $self->_remote_ip || ''});
     $self->res->headers->header('Cache-Control', 'private,max-age=0');
     $self->res->headers->header('Vary', '*');
     $self->res->headers->content_type('application/json');

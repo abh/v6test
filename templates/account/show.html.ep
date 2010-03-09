@@ -7,12 +7,12 @@
 <p>
 Name: <%= $user->name %><br>
 Login providers:
+</p>
 <ul>
 % for my $p (@{ $user->identities }) {
    <li><%= $p->data->{providerName} %>: <%= $p->identifier %></li>
 % }
 </ul>
-</p>
 
 <h3>Sites</h3>
 

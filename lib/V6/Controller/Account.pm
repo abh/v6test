@@ -29,17 +29,14 @@ sub index {
     if ($self->user) {
         return $self->render('account/show');
     }
-    $self->session;
-    $self->session->flush;
     return $self->render();
 }
 
 sub logout {
     my $self = shift;
     $self->user(undef);
-    $self->session->data(user_id => 0);
-    $self->session->flush;
-    
+    delete $self->session->{user_id};
+    delete $self->session->{token};
     return $self->redirect('/');
 }
 
@@ -51,7 +48,7 @@ sub show {
 sub add {
     my $self = shift;
     my $token = $self->req->param('token');
-    my $session_token = $self->session->data('token');
+    my $session_token = $self->token;
     unless ($token and $session_token and $token eq $session_token) {
         return $self->render_json({ error => 'Invalid token' });
     }
@@ -111,7 +108,7 @@ sub token {
     use Data::Dumper qw(Dumper);
     warn "USER DATA: ", Dumper(\$user_data);
 
-    my $session = $self->session(1);
+    my $session = $self->session;
 
     # if user is already logged in and there's different user data
     #    does the new identifier already exist?
@@ -148,8 +145,7 @@ sub token {
     #my $verified_email = $trusted_providers{$user_data->{providerName}}
     #  && $user_data->{verifiedEmail};
 
-    $session->data(user_id => $user_id);
-    $session->flush;
+    $session->{user_id} = $user_id;
 
     my $url = $req->param('r') || '/account';
     return $self->redirect($url);
