@@ -57,7 +57,7 @@ sub json {
     my $self = shift;
 
     my $params = $self->req->params->to_hash;
-    use Data::Dumper qw(Dumper);
+    #use Data::Dumper qw(Dumper);
 
     my $host = $self->req->headers->host || '';
     $host =~ s/:\d+$//;
@@ -72,7 +72,7 @@ sub json {
     $data->{'version'}    = $params->{version};
     $data->{'host'}       = $host;
 
-    warn Dumper(\$data); # , \$self);
+    #warn Dumper(\$data); # , \$self);
 
     my $rv = $self->_count($data);
 

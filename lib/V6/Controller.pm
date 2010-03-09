@@ -47,11 +47,7 @@ sub _redirect {
 sub render {
     my $self = shift;
     $self->stash('js' => []) unless $self->stash('js');
-
     $self->stash->{user} = $self->user;
-    my $session = $self->session;
-    use Data::Dump qw(pp);
-    warn pp($session);
     return $self->SUPER::render(@_);
 }
 
