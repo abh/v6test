@@ -10,11 +10,13 @@ use lib "$FindBin::Bin/../../lib";
 
 use V6::DB;
 use V6::Summarizer;
+use JSON::XS ();
+
+my $JSON = JSON::XS->new->relaxed(1)->allow_blessed(1);
 
 my $summ = V6::Summarizer->new;
 
 my $mdb  = V6::DB->mongodb;
-my $coll = $mdb->get_collection('results');
 
 $mdb->get_collection('counts')->ensure_index
   ({ site => 1, year => 1, month => 1, country => 1 });
@@ -22,11 +24,9 @@ $mdb->get_collection('counts')->ensure_index
 $mdb->get_collection('counts_daily')->ensure_index
   ({ site => 1, date => 1, country => 1 });
 
-my $cursor = $coll->query({}, { sort_by => { _id => 1 } } );
 
-my $i = 0;
-
-while (my $data = $cursor->next) {
+while (my $line = <>) {
+    my $data = $JSON->decode($line);
     $summ->process_entry($data);
 }
 

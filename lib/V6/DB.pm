@@ -3,7 +3,9 @@ use MooseX::Singleton;
 use KiokuDB;
 use MongoDB;
 use KiokuDB::Backend::MongoDB;
+use V6::Config;
 use Carp qw(croak);
+use namespace::clean;
 
 has mongodb => (
     is   => 'ro',
