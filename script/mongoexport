@@ -12,32 +12,32 @@ use V6::Beanstalk;
 use V6::DB;
 use Log::Dispatch;
 use JSON::XS ();
-use File::Path qw(mkpath);
 
-my $JSON = JSON::XS->new->relaxed(1);
+my $JSON = JSON::XS->new->relaxed(1)->allow_blessed(1);
 
 my $beanstalk = V6::Beanstalk->new;
 $beanstalk->watch('v6-results');
 
-my $logs = "$FindBin::Bin/../logs";
-mkpath $logs unless -e $logs;
-
 my $log = Log::Dispatch->new(
     outputs => [ [ 'File::Stamped',
                    name        => 'data',
-                   filename    => '$logs/data.log',
+                   filename    => 'data.log',
                    min_level   => 'info',
                    mode        => 'append',
-                   stamp_fmt   => '%Y%m',
+                   stamp_fmt   => '%Y%m%d',
                    newline     => 1,
                  ]
     ],
 );
 
-while (my $job = $beanstalk->reserve) {
-    my $data = $job->args;
+my $db   = V6::DB->mongodb;
+my $coll = V6::DB->collection('results');
+my $cursor = $coll->query({}, { sort_by => { _id => 1 } } );
+
+my $i = 0;
+
+while (my $data = $cursor->next) {
     $log->info($JSON->encode($data));
-    $summ->process_entry($data);
+    #$summ->process_entry($data);
 }
 
-1;

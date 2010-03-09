@@ -34,6 +34,9 @@ WriteMakefile(
                    'Net::API::RPX' => 0,
                    'IO::Socket::SSL' => 0,  # For Net::API::RPX
 
+                   'Log::Dispatch' => 0,
+                   'Log::Dispatch::File::Stamped' => 0,
+
                    'Geo::IP'    => 0,
                    'Data::Dump' => 0,
                    'Clone'      => 0,
