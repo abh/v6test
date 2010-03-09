@@ -8,8 +8,10 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use lib "$FindBin::Bin/../../lib";
 
-use V6::Beanstalk;
 use V6::DB;
+use V6::Beanstalk;
+use V6::Summarizer;
+
 use Log::Dispatch;
 use JSON::XS ();
 use File::Path qw(mkpath);
@@ -33,6 +35,8 @@ my $log = Log::Dispatch->new(
                  ]
     ],
 );
+
+my $summ = V6::Summarizer->new;
 
 while (my $job = $beanstalk->reserve) {
     my $data = $job->args;
