@@ -58,8 +58,10 @@ sub render {
 sub token {
     my $self = shift;
 
-    return '' unless $self->session->{user_id};
-    
+    my $session = $self->session;
+
+    return '' unless $session->{user_id};
+
     $session->{token} ||= do {
         my $sha1 = Digest::SHA1->new;
         $sha1->add($$, time, rand(time));
