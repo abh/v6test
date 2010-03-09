@@ -10,3 +10,9 @@
 %= $self->render_partial('_common/statistics_table');
 % }
 
+<p class="ip64stats">
+<a href="#">Click to show IPv64 monthly stats</a> - Note that the IPv64 stats
+are only accurate currently if your site is either IPv4 or IPv6
+enabled only. In the future we'll fix the statistics summarization to
+make this more clear and show the "A+AAAA failures" properly.
+</p>

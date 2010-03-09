@@ -9,14 +9,14 @@ Tests failing the dual-record (A+AAAA) test: <%= $totals->{no_ipv64_percent} || 
 <table class="statistics">
 <th>Month</th>
 <th>Tests</th>
-<th>IPv6</th>
-<!-- <th>No 4+6</th> -->
+<th>IPv6 support</th>
+<th class="ip64stats">No 4+6 support</th>
 % for my $s (@$stats) {
 <tr>
 <td> <%= $s->{date} eq 'totals' ? 'Total' : $s->{date} %> </td>
 <td> <%= $s->{total} %> </td>
 <td> <%= $s->{ipv6_percent} %>% </td>
-<!-- <td> <%= $s->{no_ipv64_percent} %>% </td> -->
+<td class="ip64stats"> <%= $s->{no_ipv64_percent} %>% </td>
 </tr>
 % }
 

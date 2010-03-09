@@ -50,7 +50,17 @@ $(document).ready(function () {
 
 
    if ($('#tabs').length) {
-      $('#tabs').tabs({remote: true});
+      $('#tabs').tabs({
+         load: function(event, ui) {
+            if ($('p.ip64stats').length) {
+                  $(ui.panel).find('p.ip64stats').show();
+                  $(ui.panel).find('p.ip64stats a').click( function(event) {
+                      event.preventDefault();
+                      $(ui.panel).find('.ip64stats').show();
+                  });
+            }
+         }
+      });
    }
 
    if ($('#code_config').length) {
