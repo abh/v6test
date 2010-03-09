@@ -27,7 +27,7 @@ mkpath $logs unless -e $logs;
 my $log = Log::Dispatch->new(
     outputs => [ [ 'File::Stamped',
                    name        => 'data',
-                   filename    => '$logs/data.log',
+                   filename    => "$logs/data.log",
                    min_level   => 'info',
                    mode        => 'append',
                    stamp_fmt   => '%Y%m',
@@ -42,6 +42,7 @@ while (my $job = $beanstalk->reserve) {
     my $data = $job->args;
     $log->info($JSON->encode($data));
     $summ->process_entry($data);
+    $job->delete; # error checking on the log::dispatch stuff?
 }
 
 1;

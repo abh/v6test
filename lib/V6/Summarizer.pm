@@ -4,6 +4,7 @@ use V6::DB;
 use Clone qw(clone);
 use Geo::IP;
 use Data::Dump qw(pp);
+use DateTime ();
 use namespace::clean;
 
 my $gi = Geo::IP->new(GEOIP_STANDARD);
