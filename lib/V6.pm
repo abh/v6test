@@ -63,6 +63,10 @@ sub startup {
 
     $self->static(bless $self->static, 'V6::Static::Dispatcher');
 
+    $self->session->default_expiration( 86400 * 7 );
+    $self->session->cookie_name('state');
+    $self->session->cookie_domain($self->config->base_domain);
+
     # Default to ".ep" templates
     $self->renderer->default_handler('ep');
 
