@@ -39,7 +39,8 @@ who have trouble connecting to servers with both A and AAAA records.</p>
 
 <dt>Is the code for the system available?</dt>
 
-<dd> Yes, it is <a href="http://git.develooper.com/?p=v6test.git;a=summary">in git</a>. </dd>
+<dd> Yes, it is <a href="http://git.develooper.com/?p=v6test.git;a=summary">in git</a>. 
+</dd>
 
 <dt> Contact? </dt>
 <dd> Email <a href="mailto:ask@develooper.com">Ask Bjørn Hansen</a>. </dd>
