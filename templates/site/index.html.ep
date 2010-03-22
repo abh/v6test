@@ -4,7 +4,9 @@
 
 <a href="/account">Go to your account</a>
 
-<div id="tabs">
+<div id="loading">Loading...</div>
+
+<div id="tabs" data-selected="<%= $site->has_data ? 1 : 0 %>" class="page_flash">
   <ul>
 
 % if ($is_owner) {
@@ -61,10 +63,10 @@ Does your site have:<br>
    <form id="site_options" action="/site/options" method="get">
       <input type="hidden" name="site" value="<%= $site->id %>">
       <input type="checkbox" id="public_stats" name="public_stats" <%= $site->public_stats ? 'checked' : '' %>>
-      <label for="public_stats">Public statistics enabled</label>
+      <label for="public_stats">Public statistics</label> (allow everyone to see the statistics page)
    </form>
 
-   <div id="settings_status"></div>
+   <div id="settings_status">&nbsp;</div>
 
   </div>
 % }

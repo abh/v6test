@@ -50,7 +50,10 @@ $(document).ready(function () {
 
 
    if ($('#tabs').length) {
+      var selected = $('#tabs').attr('data-selected') || 0;
+
       $('#tabs').tabs({
+         selected: selected,
          load: function(event, ui) {
             if ($('p.ip64stats').length) {
                   $(ui.panel).find('p.ip64stats').show();
@@ -61,6 +64,8 @@ $(document).ready(function () {
             }
          }
       });
+      $('#loading').hide();
+      $('#tabs').removeClass('page_flash');
    }
 
    if ($('#code_config').length) {
@@ -90,7 +95,7 @@ $(document).ready(function () {
                  }    
              },
              beforeSubmit: function(arr, $form, options) {
-                 console.log(arr);
+                 // console.log(arr);
                  arr.push({ name: 'token', 'value': v6s.token});
                  $('#settings_status').html( 'Saving ...' );
              }         

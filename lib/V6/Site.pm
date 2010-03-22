@@ -54,6 +54,13 @@ sub stats_by_month {
     return $summ->stats_by_month({ site_id => $self->id });
 }
 
+sub has_data {
+    my $self = shift;
+    my $summ = V6::Summarizer->new;
+    return $summ->has_data({ site_id => $self->id });
+}
+
+
 __PACKAGE__->meta->make_immutable;
 
 1;

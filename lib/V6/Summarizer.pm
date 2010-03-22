@@ -83,6 +83,15 @@ sub process_entry {
     }
 }
 
+sub has_data {
+    my ($self, $args) = @_;
+    my $site = $args->{site_id} || '*';
+    my $coll = V6::DB->mongodb->get_collection('counts');
+    my @data = $coll->query({ site => $site, country => '*' })->limit(1);
+    return 1 if @data;
+    return 0;
+}
+
 sub stats_by_month {
     my ($self, $args) = @_;
 
