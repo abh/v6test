@@ -15,20 +15,18 @@ WriteMakefile(
     AUTHOR       => 'Ask Bjørn Hansen <ask@develooper.com>',
     EXE_FILES => ['script/v6'],
     PREREQ_PM => { 'Mojo' => '0.9003',
-                   'MojoX::Session::Store::MongoDB' => 0.52,
-                   'MojoX::Session' => 0.15,
                    'File::Slurp' => 0,
                    'JSON::XS'    => 2.20,
 
-                   'MongoDB'     => 0.29,
+                   'MongoDB'     => 0.30,
 
-                   'KiokuDB'     => 0.35,
+                   'KiokuDB'     => 0.41,
                    'KiokuDB::Backend::MongoDB' => 0.01,
 
                    'Beanstalk::Client' => 1.05,
                    'Moose'       => 0,
                    'MooseX::Singleton' => 0.22,
-                  'DateTime'          => 0,
+                   'DateTime'          => 0,
                    'Data::Transformer' => 0,
                    'File::HomeDir' => 0,
                    'File::Find::Rule' => 0,
