@@ -8,6 +8,7 @@ use V6::User;
 use V6::User::Site;
 use V6::User::Identity;
 use V6::Site;
+use Digest::SHA1 ();
 
 use namespace::clean -except => 'meta';
 
@@ -23,7 +24,7 @@ sub index {
     return $self->render_not_found unless $site;
 
     my $is_owner = $user && $user->is_owner($site_id);
-    $self->stash('is_owner', $is_owner);
+    $self->stash('is_owner', $is_owner ? 1 : 0);
     $self->stash('site', $site);
 
     return $self->render_not_found
@@ -57,7 +58,6 @@ sub code {
 sub statistics {
     my $self = shift;
     my $site_id = $self->param('site');
-
     my $site = eval { V6::Site->lookup($site_id) };
     return $self->render_not_found unless $site;
 
@@ -77,6 +77,31 @@ sub statistics {
     return $self->render_json( { stats => $stats } );
 }
 
+sub options {
+    my $self = shift;
+    my $token = $self->req->param('token');
+    my $session_token = $self->token;
+    unless ($token and $session_token and $token eq $session_token) {
+        return $self->render_json({ error => 'Invalid token' });
+    }
+
+    my $user = $self->user;
+    my $db = V6::DB->db;
+
+    my $site_id = $self->param('site');
+    my $site = eval { V6::Site->lookup($site_id) };
+    return $self->render_not_found unless $site;
+
+    return $self->render_json( { error => 'Forbidden' } )
+      unless ($self->user and $self->user->is_owner($site));
+
+    my $public = $self->req->param('public_stats');
+    $site->public_stats( $public ? 1 : 0 );
+    $db->store($site);
+
+    return $self->render_json( { updated => 1, public_stats => $site->public_stats } );
+
+}
 
 1;
 

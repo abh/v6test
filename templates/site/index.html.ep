@@ -2,7 +2,7 @@
 
 <h1><%= $site->name || $site->id %></h1>
 
-<a href="/account">Back to account</a>
+<a href="/account">Go to your account</a>
 
 <div id="tabs">
   <ul>
@@ -55,9 +55,18 @@ Does your site have:<br>
 
 
 % if ($is_owner) {
+
   <div id="settings">
-    <p>Coming soon...</p>
-    </div>
+
+   <form id="site_options" action="/site/options" method="get">
+      <input type="hidden" name="site" value="<%= $site->id %>">
+      <input type="checkbox" id="public_stats" name="public_stats" <%= $site->public_stats ? 'checked' : '' %>>
+      <label for="public_stats">Public statistics enabled</label>
+   </form>
+
+   <div id="settings_status"></div>
+
+  </div>
 % }
 
 </div>

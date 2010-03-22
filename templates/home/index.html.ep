@@ -13,8 +13,8 @@ who have trouble connecting to servers with both A and AAAA records.</p>
 <dd> See the global <a href="/statistics">statistics page</a>. </dd>
 
 <dt>How can I help?</dt>
-<dd> Create <a href="/account">an account</a> and install the
-     javascript widget on your site. </dd>
+<dd> Create <a href="/account">an account</a> and install the small
+     javascript widget on your site.  The account page gives instructions.</dd>
 
 <dt>How does the system work?</dt>
 <dd> A bit of javascript inserts image tags for three 1x1 pixel gifs. The images

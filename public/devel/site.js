@@ -79,4 +79,27 @@ $(document).ready(function () {
        });
    }
 
+   if ($('#site_options').length) {
+       var form_options = 
+           { success: function(response, status, xhr, $form) {
+                 if (response.updated) {
+                     $('#settings_status').html( 'Saved!' );
+                 }
+                 else {
+                     $('#settings_status').html( response.error || 'Error saving' );
+                 }    
+             },
+             beforeSubmit: function(arr, $form, options) {
+                 console.log(arr);
+                 arr.push({ name: 'token', 'value': v6s.token});
+                 $('#settings_status').html( 'Saving ...' );
+             }         
+           };
+                                
+       $('#site_options').change(function() {
+           $('#site_options').ajaxSubmit(form_options);
+       });
+   }
+
+
 });
