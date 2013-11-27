@@ -5,8 +5,6 @@ use Mojo::Base 'Mojolicious';
 
 use V6::Config;
 
-has config => sub { V6::Config->new };
-
 use V6::Static::Dispatcher;
 
 use V6::DB;
@@ -14,7 +12,10 @@ use V6::User;
 use V6::User::Identity;
 use V6::Util ();
 
-use V6::Controller::Account;
+my $_config;
+sub config {
+    return $_config ||= do { V6::Config->new }
+}
 
 # This method will run for each request
 sub dispatch {
