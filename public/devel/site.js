@@ -43,7 +43,7 @@ $(document).ready(function () {
                 { 'token': v6s.token, 'name': name },
                 function(data, textStatus) {
                     $('#site_list').html(data.site_list);
-                    // console.log("data", data); 
+                    // console.log("data", data);
                 }
       );
    });
@@ -69,38 +69,38 @@ $(document).ready(function () {
    }
 
    if ($('#code_config').length) {
-       var form_options = 
+       var form_options =
            { success: function(response, status, xhr, $form) {
                           var code = response.code;
                           $('textarea.code').html( v6s.escape_html(code) );
              },
              beforeSubmit: function() {
                  $('textarea.code').html('Loading ...');
-             }         
+             }
            };
-                                
+
        $('#code_config').change(function() {
            $('#code_config').ajaxSubmit(form_options);
        });
    }
 
    if ($('#site_options').length) {
-       var form_options = 
+       var form_options =
            { success: function(response, status, xhr, $form) {
                  if (response.updated) {
                      $('#settings_status').html( 'Saved!' );
                  }
                  else {
                      $('#settings_status').html( response.error || 'Error saving' );
-                 }    
+                 }
              },
              beforeSubmit: function(arr, $form, options) {
                  // console.log(arr);
                  arr.push({ name: 'token', 'value': v6s.token});
                  $('#settings_status').html( 'Saving ...' );
-             }         
+             }
            };
-                                
+
        $('#site_options').change(function() {
            $('#site_options').ajaxSubmit(form_options);
        });

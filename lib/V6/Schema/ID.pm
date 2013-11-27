@@ -8,4 +8,3 @@ sub kiokudb_object_id { shift->id };
 requires "id";
 
 1;
-

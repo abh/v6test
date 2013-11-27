@@ -30,14 +30,14 @@ sub dispatch {
         my @live_objects = $l->live_objects;
 
         my $msg = "Loaded " . scalar(@live_objects) . " objects:\n" . V6::Util::format_leak_table(@live_objects);
-        
+
         $self->log->debug($msg);
-        
+
         @live_objects = ();
     }
-    
+
     undef $scope;
-    
+
     {
         # anything still live at this point is a leak
         if ( my @leaked_objects = $l->live_objects ) {

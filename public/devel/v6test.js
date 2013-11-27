@@ -33,7 +33,7 @@ v6.submit_results = function() {
         q += '&' + host + '=';
         if (v6.status[host] && v6.status[host] == 'ok') {
            var response_time = v6.times[host];
-           q += response_time; 
+           q += response_time;
            q += '&' + host + '_ip=' + v6.ip[host];
            if ($target) {
               $target.append(host + ": " + 'ok<br>');
@@ -78,7 +78,7 @@ v6.check_count = function() {
            if (v6.status[host] == 'ok' && !v6.ip[host]) {
               return;
            }
-        }    
+        }
         if (v6.timer) clearTimeout(v6.timer);
         v6.submit_results();
     }
@@ -105,7 +105,7 @@ v6.test = function() {
       v6.images_loaded = 0;
       var img_tags = "";
       for (var i=0; i < v6.hosts.length; i++) {
-	  var host = v6.hosts[i]; 
+	  var host = v6.hosts[i];
           img_tags += '<img id="v6test_img_' + host + '"'
                        + ' class="v6test_test_img" '
 		       + ' src="http://' + host + '.v6test.develooper.com/i/t.gif"'

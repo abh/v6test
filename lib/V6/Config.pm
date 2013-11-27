@@ -25,11 +25,11 @@ has '_base_url' =>
       default => sub { $_[0]->_config_hash()->{base_url} },
     );
 
-has 'base_domain' => 
+has 'base_domain' =>
     ( is      => 'rw',
       isa     => 'Str',
       lazy    => 1,
-      default => sub { $_[0]->_config_hash()->{base_domain} 
+      default => sub { $_[0]->_config_hash()->{base_domain}
                        || Mojo::URL->new($_[0]->base_url)->host();
                      },
     );
@@ -45,7 +45,7 @@ has 'mongodb_config' =>
     ( is      => 'rw',
       isa     => 'HashRef',
       lazy    => 1,
-      auto_deref => 1, 
+      auto_deref => 1,
       default => sub { my $h = $_[0]->_config_hash()->{mongodb_config};
                        $h ? $h : { host => 'localhost', port => 27017 };
                    },

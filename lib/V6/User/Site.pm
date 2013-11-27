@@ -20,7 +20,6 @@ has 'verified' => (
     default  => 0,
 );
 
-
 __PACKAGE__->meta->make_immutable;
 
 1;

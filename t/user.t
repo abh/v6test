@@ -11,7 +11,7 @@ use Data::Dump qw(pp);
 use KiokuDB::Backend::MongoDB;
 
 use Text::SimpleTable;
- 
+
 sub format_table {
     my @objects = @_;
     require Text::SimpleTable;
@@ -30,7 +30,7 @@ my $db = V6::DB->db;
     ok(my $scope    = $db->new_scope, 'new scope');
     ok(my $user     = V6::User->new({ identities => [], foo => 'bar' }), "new user");
     ok($db->store($user), 'storing user');
-    
+
 #ok(my $identity = V6::User::Identity->new(identifier => 'http://test.develooper.com/', data => {}), "new identity");
 #ok($user->identities([$identity]), "set identity on user");
 #is($user, $identity->user, "identity has user");

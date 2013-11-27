@@ -2,8 +2,8 @@
   my $cdn_url  = $self->app->config->cdn_url;
   my $base_url = $self->app->config->base_url( $config->{ip_type} );
   if ($config->{widget}) {
-         
-  }   
+
+  }
 
 if ($config->{include_jquery}) { %>
 %   if ($self->app->mode eq 'development') {

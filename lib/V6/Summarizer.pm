@@ -24,7 +24,6 @@ sub _build_version {
     return $version;
 }
 
-
 sub process_entry {
     my ($self, $entry) = @_;
 
@@ -51,7 +50,7 @@ sub process_entry {
     # TODO: get country
     my $country   = $gi->country_code_by_addr($entry->{ipv4_ip});
     $country      = $country && lc $country;
-    
+
     my $site      = $entry->{site};
     my $dt        = DateTime->from_epoch(epoch => $entry->{time});
     my $date      = $dt->ymd;
@@ -74,7 +73,7 @@ sub process_entry {
                                 {'$inc' => { count => 1 } },
                                 {'upsert' => 1 }
                                );
-            
+
             $count_coll->update({ %d, year => $dt->year, month => $dt->month },
                                 {'$inc' => { count => 1 } },
                                 {'upsert' => 1 }
@@ -123,7 +122,7 @@ sub stats_by_month {
             next if $k =~ m/_percent$/;
 
             $totals{ $k } += $d->{$k};
-            
+
             next if $k eq 'total';
             my $total = $d->{total} || 1;
             my $percent = 100 / $total * $d->{$k};

@@ -4,7 +4,7 @@
 
 <p>No data collected yet for this site.</p>
 
-%   
+%
 % }
 % else {
 %= $self->render_partial('_common/statistics_table');

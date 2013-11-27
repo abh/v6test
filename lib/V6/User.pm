@@ -11,7 +11,7 @@ has id => (
 );
 
 with "V6::Schema::ID",
-     "KiokuDB::Role::UUIDs" => { alias => { "generate_uuid" => "_build_id" } }; 
+     "KiokuDB::Role::UUIDs" => { alias => { "generate_uuid" => "_build_id" } };
 
 sub lookup {
     my ($class, $id) = @_;
@@ -38,8 +38,7 @@ has 'identities' => (
     isa      => "ArrayRef[V6::User::Identity]",
     is       => "rw",
     required => 1,
-); 
-
+);
 
 sub BUILD {
     my ($self, $params) = @_;
@@ -84,7 +83,7 @@ has 'sites' => (
 #    map { $_->site } grep { $_->verified } @{ $self->user_sites };
 #}
 
-sub name { 
+sub name {
     my $self = shift;
     return "" unless scalar $self->identities > 0;
     my ($name) = map { $_->name } first { $_->name } @{ $self->identities };
