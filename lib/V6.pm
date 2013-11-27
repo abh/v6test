@@ -1,14 +1,12 @@
 package V6;
-
-use strict;
-use warnings;
-
 our $VERSION = '0.10';
 
-use Mojolicious '0.999922';
-use base 'Mojolicious';
+use Mojo::Base 'Mojolicious';
 
 use V6::Config;
+
+has config => sub { V6::Config->new };
+
 use V6::Static::Dispatcher;
 
 use V6::DB;
@@ -16,7 +14,7 @@ use V6::User;
 use V6::User::Identity;
 use V6::Util ();
 
-__PACKAGE__->attr( config => sub { V6::Config->new }  );
+use V6::Controller::Account;
 
 # This method will run for each request
 sub dispatch {
@@ -63,14 +61,14 @@ sub startup {
 
     $self->static(bless $self->static, 'V6::Static::Dispatcher');
 
-    $self->session->default_expiration( 86400 * 7 );
-    $self->session->cookie_name('state');
-    $self->session->cookie_domain($self->config->base_domain);
+    $self->sessions->default_expiration( 86400 * 7 );
+    $self->sessions->cookie_name('state');
+    $self->sessions->cookie_domain($self->config->base_domain);
 
     # Default to ".ep" templates
     $self->renderer->default_handler('ep');
 
-    $self->routes->namespace('V6::Controller');
+    push @{$self->routes->namespaces}, 'V6::Controller';
 
     $self->types->type(html => 'text/html; charset=UTF-8');
 

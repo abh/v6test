@@ -29,7 +29,7 @@ sub _count {
     my ($self, $data) = @_;
     eval { $beanstalk->put({ttr => 10}, $data) };
     if (my $err = $@) {
-        $self->log->warn($err);
+        $self->app->log->warn($err);
         return 0;
     }
     return 1;

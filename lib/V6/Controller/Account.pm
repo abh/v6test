@@ -18,9 +18,18 @@ use Data::Dump qw(pp);
 
 use namespace::clean -except => 'meta';
 
-my $rpx = Net::API::RPX->new({api_key => V6->config->rpx_api_key});
-use Data::Dumper qw(Dumper);
-warn Dumper(\$rpx);
+my $rpx;
+
+sub _setup_rpx {
+    return if $rpx;
+    warn "geting config from", Dumper($::V6);
+    my $config = V6->config();
+    warn "CONFIG: ", Dumper(\$config);
+    my $api_key = $config->rpx_api_key;
+    $rpx = Net::API::RPX->new({api_key => $api_key});
+    use Data::Dumper qw(Dumper);
+    warn "RPX OBJECT: ", Dumper(\$rpx);
+}
 
 my %trusted_providers = map { $_ => 1 } qw(Google Yahoo!);
 
@@ -35,8 +44,8 @@ sub index {
 sub logout {
     my $self = shift;
     $self->user(undef);
-    delete $self->session->{user_id};
-    delete $self->session->{token};
+    $self->session('user_id', '');
+    $self->session('token', '');
     return $self->redirect('/');
 }
 
@@ -48,13 +57,16 @@ sub show {
 sub add {
     my $self = shift;
     my $token = $self->req->param('token');
-    my $session_token = $self->token;
+    my $session_token = $self->session_token;
     unless ($token and $session_token and $token eq $session_token) {
-        return $self->render_json({ error => 'Invalid token' });
+        $self->app->log->debug("invalid token");
+        return $self->render(json => { error => 'Invalid token' });
     }
     my $name  = $self->req->param('name');
 
     my $user = $self->user;
+
+    $self->app->log->debug("adding site: ", $name);
 
     my $db = V6::DB->db;
 
@@ -62,19 +74,21 @@ sub add {
     #    $self->stash->{user_site} = $user_site;
     #    return $self->render_json({ url => $user_site->site->url, verified => $user_site->verified });
     #}
-    
+
     # lookup if we already have a higher level page on the same domain and it's verified
     #  - add verified site and pass user there
 
     my $site = V6::Site->new({ name => $name, urls => [] });
     push @{ $user->sites }, $site;
 
+    $self->app->log->debug("storing site");
+
     $db->store($site);
     $db->store($user);
 
-    my $list = $self->render_partial('account/site_list');
+    my $list = $self->render('account/site_list', partial => 1);
 
-    return $self->render_json({ name => $site->name, id => $site->id, site_list => $list });
+    return $self->render(json => { name => $site->name, id => $site->id, site_list => $list });
 }
 
 sub verify_site {
@@ -86,6 +100,10 @@ sub verify_site {
 sub token {
     my $self = shift;
 
+    $self->app->log->warn("token handler");
+
+    _setup_rpx();
+
     my $res = $self->res;
     my $req = $self->req;
 
@@ -94,7 +112,12 @@ sub token {
     my $token = $req->param('token');
 
     my $user_data = $token && eval { $rpx->auth_info({ token => $token }) };
-    warn $@ if $@;
+    if (my $err = $@) {
+        warn "RPX ERROR: $@";
+        use Data::Dump qw(pp);
+        $self->app->log->warn("login error: " . $@);
+        pp($@);
+    }
 
     $user_data = $user_data && $user_data->{profile};
 
@@ -108,11 +131,9 @@ sub token {
     use Data::Dumper qw(Dumper);
     warn "USER DATA: ", Dumper(\$user_data);
 
-    my $session = $self->session;
-
     # if user is already logged in and there's different user data
     #    does the new identifier already exist?
-    #    yes? 
+    #    yes?
     #      login new identifier
     #    no?
     #      ask if new login should be added
@@ -135,17 +156,17 @@ sub token {
         }
         $user = $identity->user;
         $user->identities([uniq @{$identity->user->identities}]);
-        
+
         $identity->data($user_data);
     }
 
     V6::DB->db->store($identity);
-    my $user_id = V6::DB->db->store($user);    
+    my $user_id = V6::DB->db->store($user);
 
     #my $verified_email = $trusted_providers{$user_data->{providerName}}
     #  && $user_data->{verifiedEmail};
 
-    $session->{user_id} = $user_id;
+    $self->session('user_id' => $user_id);
 
     my $url = $req->param('r') || '/account';
     return $self->redirect($url);

@@ -1,6 +1,6 @@
 package V6::Static::Dispatcher;
 use strict;
-use base 'MojoX::Dispatcher::Static';
+use Mojo::Base 'Mojolicious::Static';
 
 sub serve {
     my ($self, $c, $rel) = @_;
@@ -18,7 +18,7 @@ sub serve {
         my $no_cache = 's-max-age=0,max-age=0,private,no-cache';
         if ($c->req->headers->header('X-Varnish') and $c->app->config->proxy_mode) {
             $res->headers->header('Cache-Control', 's-maxage=315360000');
-            $res->headers->header('X-Pass-Cache-Control', 
+            $res->headers->header('X-Pass-Cache-Control',
                                   $no_cache
                                  );
         }

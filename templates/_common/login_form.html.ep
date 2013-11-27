@@ -1,5 +1,5 @@
 
-% my $token_url = $self->app->config->base_url . '/account/token?foo=bar';
+% my $token_url = $self->app->config->base_url . '/account/token';
 
 <script src="https://rpxnow.com/openid/v2/widget"
         type="text/javascript"></script>

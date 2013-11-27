@@ -2,6 +2,7 @@
 
 <p>
 
-%= $self->render_partial('_common/statistics_table');
+%= $self->render('_common/statistics_table', partial => 1);
+
 
 </p>

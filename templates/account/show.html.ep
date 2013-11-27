@@ -17,7 +17,7 @@ Login providers:
 <h3>Sites</h3>
 
 <div id="site_list">
-  <%== $self->render_partial('account/site_list'); %>
+  <%== $self->render('account/site_list', partial => 1); %>
 </div>
 
 <a id="link-add-site" href="/account/add">Add a site</a>

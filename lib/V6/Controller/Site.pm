@@ -14,7 +14,7 @@ use namespace::clean -except => 'meta';
 
 sub index {
     my $self = shift;
-    my $site_id = $self->param('site') 
+    my $site_id = $self->param('site')
       or return $self->render_not_found;
 
     my $db = V6::DB->db;
@@ -24,14 +24,14 @@ sub index {
     return $self->render_not_found unless $site;
 
     my $is_owner = $user && $user->is_owner($site_id);
-    $self->stash('is_owner', $is_owner ? 1 : 0);
-    $self->stash('site', $site);
+    $self->stash('is_owner' => $is_owner ? 1 : 0);
+    $self->stash('site' => $site);
 
     return $self->render_not_found
       unless $self->stash('is_owner') or $site->public_stats;
 
     return $self->render;
-    
+
 }
 
 sub code {
@@ -42,7 +42,7 @@ sub code {
     return $self->render_not_found unless $site;
 
     my $config = { };
-    
+
     for my $f (qw(include_jquery ip_type)) {
         $config->{$f} = $self->param($f);
     }
@@ -80,7 +80,7 @@ sub statistics {
 sub options {
     my $self = shift;
     my $token = $self->req->param('token');
-    my $session_token = $self->token;
+    my $session_token = $self->session_token;
     unless ($token and $session_token and $token eq $session_token) {
         return $self->render_json({ error => 'Invalid token' });
     }

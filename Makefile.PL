@@ -30,8 +30,11 @@ WriteMakefile(
                    'Data::Transformer' => 0,
                    'File::HomeDir' => 0,
                    'File::Find::Rule' => 0,
+
+                   # For Net::API::RPX
                    'Net::API::RPX' => 0,
-                   'IO::Socket::SSL' => 0,  # For Net::API::RPX
+                   'IO::Socket::SSL' => 0,
+                   'LWP::Protocol::https' => 0,
 
                    'Log::Dispatch' => 0,
                    'Log::Dispatch::File::Stamped' => 0,
@@ -42,7 +45,7 @@ WriteMakefile(
 
                    # For testing
                    'Scope::Guard' => 0,
-                   'Text::SimpleTable' => 0, 
+                   'Text::SimpleTable' => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );

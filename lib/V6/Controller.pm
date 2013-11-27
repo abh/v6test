@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Data::Dump qw(pp);
+use Digest::SHA1;
 
 use base 'Mojolicious::Controller';
 
@@ -32,16 +33,15 @@ sub _redirect {
         # my $base     = $self->req->url->base->clone;
         # my $location = Mojo::URL->new->base($base);
     }
- 
+
     $self->res->code($code);
     $self->res->headers->location($url);
-    $self->stash->{template} = 'redirect.html';
     my $msg = qq[
     <HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
     <TITLE>301 Moved</TITLE></HEAD><BODY><H1>301 Moved</H1>
     The document has moved <A HREF="$url">here</A>.</BODY></HTML>
     ];
-    return $self->render_text($msg); 
+    return $self->render(inline => $msg, text => 1);
 }
 
 sub render {
@@ -51,20 +51,21 @@ sub render {
     return $self->SUPER::render(@_);
 }
 
-sub token {
+sub session_token {
     my $self = shift;
 
-    my $session = $self->session;
+    return '' unless $self->session('user_id');
 
-    return '' unless $session->{user_id};
+    my $token = $self->session('token');
 
-    $session->{token} ||= do {
+    if (!$token) {
         my $sha1 = Digest::SHA1->new;
         $sha1->add($$, time, rand(time));
-        $sha1->hexdigest();
-    };
+        $token = $sha1->hexdigest();
+        $self->session('token', $token);
+    }
 
-    return $session->{token};
+    return $token;
 }
 
 sub user {

@@ -1,4 +1,4 @@
 error.
 
-<%== $self->render_partial('_common/login_form'); %>
+<%== $self->render('_common/login_form', partial => 1); %>
 
