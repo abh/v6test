@@ -69,7 +69,7 @@ sub startup {
     # Default to ".ep" templates
     $self->renderer->default_handler('ep');
 
-    push @{$self->routes->namespaces}, 'V6::Controller';
+    @{$self->routes->namespaces} = qw(V6::Controller);
 
     $self->types->type(html => 'text/html; charset=UTF-8');
 
