@@ -18,18 +18,7 @@ use Data::Dump qw(pp);
 
 use namespace::clean -except => 'meta';
 
-my $rpx;
-
-sub _setup_rpx {
-    return if $rpx;
-    warn "geting config from", Dumper($::V6);
-    my $config = V6->config();
-    warn "CONFIG: ", Dumper(\$config);
-    my $api_key = $config->rpx_api_key;
-    $rpx = Net::API::RPX->new({api_key => $api_key});
-    use Data::Dumper qw(Dumper);
-    warn "RPX OBJECT: ", Dumper(\$rpx);
-}
+my $rpx = Net::API::RPX->new({api_key => V6->config->rpx_api_key});
 
 my %trusted_providers = map { $_ => 1 } qw(Google Yahoo!);
 
@@ -100,10 +89,6 @@ sub verify_site {
 sub token {
     my $self = shift;
 
-    $self->app->log->warn("token handler");
-
-    _setup_rpx();
-
     my $res = $self->res;
     my $req = $self->req;
 
@@ -114,7 +99,6 @@ sub token {
     my $user_data = $token && eval { $rpx->auth_info({ token => $token }) };
     if (my $err = $@) {
         warn "RPX ERROR: $@";
-        use Data::Dump qw(pp);
         $self->app->log->warn("login error: " . $@);
         pp($@);
     }
