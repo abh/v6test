@@ -50,6 +50,7 @@ WriteMakefile(
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );
 
+
 sub MY::postamble {
     return <<'MAKE_FRAG';
 
@@ -59,6 +60,16 @@ testcover:
 	cover -delete
 	HARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test
 	cover
+
+linux: v6test_linux_amd64
+
+v6test_linux_amd64: *.go
+	gox -osarch="linux/amd64"
+
+push: linux
+	rsync -avP v6test_linux_amd64 v6test@lax11.ntppool.net:bin/
+
+
 
 MAKE_FRAG
 }
