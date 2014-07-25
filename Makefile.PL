@@ -14,7 +14,7 @@ WriteMakefile(
     VERSION_FROM => 'lib/V6.pm',
     AUTHOR       => 'Ask Bjørn Hansen <ask@develooper.com>',
     EXE_FILES => ['script/v6'],
-    PREREQ_PM => { 'Mojo' => '0.9003',
+    PREREQ_PM => { 'Mojolicious' => '4',
                    'File::Slurp' => 0,
                    'JSON::XS'    => 2.20,
 

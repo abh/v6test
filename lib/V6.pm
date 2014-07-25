@@ -26,8 +26,8 @@ sub dispatch {
     my $rv = $self->SUPER::dispatch(@_);
 
     my $l = $scope->live_objects;
-    
-    if ( 1 ) {
+
+    if ( 0 ) {
         my @live_objects = $l->live_objects;
 
         my $msg = "Loaded " . scalar(@live_objects) . " objects:\n" . V6::Util::format_leak_table(@live_objects);
@@ -79,6 +79,8 @@ sub startup {
     $r->route('/')->to(controller => 'home', action => 'index');
 
     $r->route('/c/:action')->to(controller => 'counter');
+
+    #$r->route('/account/token')->to(controller => 'account', action => 'token');
 
     # Default route
     $r->route('/:controller/:action')->to(action => 'index');
