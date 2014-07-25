@@ -58,7 +58,7 @@ sub startup {
     # force loading the config on startup
     $self->config;
 
-    $self->secret( $self->config->secret );
+    $self->secrets( [ $self->config->secret ] );
 
     $self->static(bless $self->static, 'V6::Static::Dispatcher');
 

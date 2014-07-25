@@ -15,6 +15,6 @@
     <%== content %>
     </div>
 
-    <%== $self->render('_common/footer', partial => 1); %>
+    <%== $c->render_to_string('_common/footer'); %>
   </body>
 </html>

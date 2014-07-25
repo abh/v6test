@@ -144,7 +144,7 @@ sub _build_config_file {
 
     my @looked;
 
-    my @dirs = ('/etc/v6test');
+    my @dirs = ('.', '/etc/v6test');
     $> and push @dirs, $self->_home_dir() . "/$_" for qw(.v6test etc);
 
     for my $dir (@dirs) {

@@ -2,7 +2,6 @@
 
 <p>
 
-%= $self->render('_common/statistics_table', partial => 1);
-
+%= $c->render_to_string('_common/statistics_table')
 
 </p>

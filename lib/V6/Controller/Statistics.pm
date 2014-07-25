@@ -16,6 +16,10 @@ sub index {
     my $summ = V6::Summarizer->new;
     my $stats = $summ->stats_by_month();
 
+    use Data::Dump qw(pp);
+    warn "==========";
+    pp($stats);
+
     $self->stash('stats', $stats);
     return $self->render();
 }
