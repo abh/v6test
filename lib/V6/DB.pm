@@ -15,7 +15,8 @@ has mongodb => (
 
 sub _build_mongodb {
 
-    my $mongodb = MongoDB::Connection->new( %{ V6::Config->new->mongodb_config } );
+    my $mongodb = MongoDB::Connection->new( %{ V6::Config->new->mongodb_config },
+					    find_master => 1 );
 
     my $db = $mongodb->get_database('v6test');
 }

@@ -24,6 +24,8 @@ my %trusted_providers = map { $_ => 1 } qw(Google Yahoo!);
 
 sub index {
     my $self = shift;
+    my $session = $self->session;
+    warn Dumper(\$session);
     if ($self->user) {
         return $self->render('account/show');
     }

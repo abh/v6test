@@ -1,7 +1,17 @@
 /*! Copyright 2009-2010 Ask Bjørn Hansen
     see http://www.v6test.develooper.com/
  */
-v6 = { "version": "1.20" };
+"use strict";
+
+/*
+function(globals){
+    "use strict";
+    globals.v6 = {};
+}(this));
+*/
+
+var v6 = v6 || {};
+v6.version = "1.24";
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 6;
 v6.api_server = 'http://www.v6test.develooper.com/';
@@ -24,7 +34,7 @@ v6.submit_results = function() {
     var v6uq = $.cookie('v6uq');
     if (!v6uq) {
         v6uq = v6.uuid();
-        $.cookie('v6uq', v6uq, { expires: 28, path: cookie_path });
+        $.cookie('v6uq', v6uq, { expires: 14, path: cookie_path });
     }
 
     var q = "version=" + v6.version;
@@ -86,6 +96,10 @@ v6.check_count = function() {
 
 v6.test = function() {
 
+   setTimeout(function() {
+      (new Image()).src = "http://" + v6.uuid() + ".mapper.ntppool.org/none";
+   }, 3200);
+
    if (v6.only_once) {
       if ($.cookie('v6uq')) return;
    }
@@ -136,7 +150,6 @@ v6.test = function() {
       });
 
       v6.timer = setTimeout(function() { v6.check_timeout() }, 1000);
-
    });
 
    /* onload=\'v6.timer["' + host + '"] = (new Date).getTime();\' */
