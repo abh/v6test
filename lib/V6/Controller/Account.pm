@@ -26,6 +26,8 @@ my %trusted_providers = map { $_ => 1 } qw(Google Yahoo!);
 
 sub index {
     my $self = shift;
+    my $session = $self->session;
+    warn Dumper(\$session);
     if ($self->user) {
         return $self->render('account/show');
     }
@@ -35,7 +37,7 @@ sub index {
 sub logout {
     my $self = shift;
     $self->user(undef);
-    delete $self->session->{user_id};
+    $self->session->{user_id} = 0;
     delete $self->session->{token};
     return $self->redirect('/');
 }

@@ -21,8 +21,8 @@ sub new {
         priority => 100,
         delay    => 0,
         server   => $config->beanstalk_server,
-        encoder  => sub { JSON::XS::encode_json([shift]) },
-        decoder  => sub { JSON::XS::decode_json(shift)->[0] },
+        encoder  => sub { JSON::XS::encode_json(shift) },
+        decoder  => sub { JSON::XS::decode_json(shift) },
         @_,
     );
     (@_ ? my $c : $client) = $proto->SUPER::new(\%args);
