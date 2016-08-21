@@ -11,9 +11,9 @@ function(globals){
 */
 
 var v6 = v6 || {};
-v6.version = "1.24";
+v6.version = "1.25";
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
-v6.timeout = 6;
+v6.timeout = 4;
 v6.api_server = 'http://www.v6test.develooper.com/';
 
 var $target;
@@ -24,18 +24,11 @@ v6.check_timeout = function() {
        v6.submit_results();
    }
    else {
-       v6.timer = setTimeout(function() { v6.check_timeout() }, 1000);
+       v6.timer = setTimeout(function() { v6.check_timeout() }, 500);
    }
 };
 
 v6.submit_results = function() {
-
-    var cookie_path = v6.path || '/';
-    var v6uq = $.cookie('v6uq');
-    if (!v6uq) {
-        v6uq = v6.uuid();
-        $.cookie('v6uq', v6uq, { expires: 14, path: cookie_path });
-    }
 
     var q = "version=" + v6.version;
     for (var i=0; i < v6.hosts.length; i++) {
@@ -58,6 +51,11 @@ v6.submit_results = function() {
         }
     }
 
+    var v6uq = $.cookie('v6uq');
+    if (!v6uq) {
+	v6uq = v6.uuid();
+    }
+
     q += '&v6uq=' + v6uq;
     q += '&site=' + v6.site;
 
@@ -66,6 +64,9 @@ v6.submit_results = function() {
           if (json.ok && $target) {
              $target.append('<br>Results submitted, thanks!');
           }
+
+	  var cookie_path = v6.path || '/';
+	  $.cookie('v6uq', v6uq, { expires: 10, path: cookie_path });
       }
     );
 }
