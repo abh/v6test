@@ -11,10 +11,10 @@ function(globals){
 */
 
 var v6 = v6 || {};
-v6.version = "1.24";
+v6.version = "1.25";
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 6;
-v6.api_server = 'http://www.v6test.develooper.com/';
+v6.api_server = '//www.v6test.develooper.com/';
 
 var $target;
 
@@ -71,7 +71,7 @@ v6.submit_results = function() {
 }
 
 v6.get_ip = function(host) {
-   var url = 'http://' + host + '.v6test.develooper.com/c/ip?callback=?';
+   var url = '//' + host + '.v6test.develooper.com/c/ip?callback=?';
    jQuery.getJSON( url, "",
       function(json) {
          if (json.ip) {
@@ -97,7 +97,7 @@ v6.check_count = function() {
 v6.test = function() {
 
    setTimeout(function() {
-      (new Image()).src = "http://" + v6.uuid() + ".mapper.ntppool.org/none";
+      (new Image()).src = "//" + v6.uuid() + ".mapper.ntppool.org/none";
    }, 3200);
 
    if (v6.only_once) {
@@ -122,7 +122,7 @@ v6.test = function() {
 	  var host = v6.hosts[i];
           img_tags += '<img id="v6test_img_' + host + '"'
                        + ' class="v6test_test_img" '
-		       + ' src="http://' + host + '.v6test.develooper.com/i/t.gif"'
+		       + ' src="//' + host + '.v6test.develooper.com/i/t.gif"'
                        + ' width="1" height="1">';
       }
       $('#v6test').append(img_tags);
