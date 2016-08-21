@@ -14,7 +14,7 @@ if [ "x$STAT_T" != "x$STAT_S" ]; then
    cat  public/devel/header \
         public/devel/jquery-cookie-2.1.js \
         public/devel/v6test.js \
-      | ./script/yuicompressor --type js \
+      | uglifyjs \
       > public/js/v1/v6test.js
    touch -c -m -r public/devel/v6test.js public/js/v1/v6test.js
 fi

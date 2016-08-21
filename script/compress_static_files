@@ -29,8 +29,8 @@ my $finder = File::Find::Rule->new;
 # don't minimize the extjs and yui files (they should already be...)
 my @files = 
   grep { $_ !~ m{ ext/jquery }x }
-  $finder->or( $finder->new->directory->name('extjs', 'yui', '.g')->prune->discard,
-               $finder->new->file()->name( '*.js', '*.css' )
+  $finder->or( $finder->new->directory->name('extjs', 'yui', '.g', 'cdn')->prune->discard,
+               $finder->new->file()->name( '*.js', )
              )->in( $FindBin::Bin . "/../public" );
 
 for my $file ( @files ) {
@@ -74,7 +74,7 @@ sub minimize {
 
     my $tmp_file = "$work_path/" . min_name($file);
 
-    run("$FindBin::Bin/yuicompressor", '-o', $tmp_file, $file_orig);
+    run("uglifyjs", '-o', $tmp_file, $file_orig);
 
     my ($atime, $mtime) = (stat($file_orig))[8,9];
     utime $atime, $mtime, $tmp_file;

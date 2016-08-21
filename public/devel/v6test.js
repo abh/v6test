@@ -11,7 +11,7 @@ function(globals){
 */
 
 var v6 = v6 || {};
-v6.version = "1.25";
+v6.version = "1.30";
 v6.hosts   = ['ipv4', 'ipv6', 'ipv64'];
 v6.timeout = 4;
 v6.api_server = '//www.v6test.develooper.com/';
